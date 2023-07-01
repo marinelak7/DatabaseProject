@@ -148,7 +148,12 @@ public class  Main {
         int k = 5;
         System.out.println("\n Ερώτημα πλησιέστερων γειτόνων χωρίς χρήση καταλόγου για k=" + k +" lat=" + lat + " lon=" + lon);
         starting_time = System.currentTimeMillis();
-        KNNQuery knn_query1 = new KNNQuery();ArrayList<Location> knn_query = knn_query1.knn_without_index(locations ,middle, k );
+        KNNQuery knn_query1 = new KNNQuery();
+        Location middle = new Location(-1,lat,lon);
+        ArrayList<Location> knn_query = knn_query1.knn_without_index(locations , middle , k );
+        for (Location neighbor3 : knn_query){
+            System.out.println(neighbor3.toString());
+        }
         ending_time = System.currentTimeMillis() - starting_time;
         System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
         System.out.println("!-----------------------------------------------");
@@ -157,6 +162,15 @@ public class  Main {
         ending_time = 0;
 
         //----------------------------------------------------------------
+
+        //6. Ερώτημα πλησιέστερων γειτόνων με την χρήση καταλόγου
+
+        //----------------------------------------------------------------
+
+
+
+
+
 
 
 
