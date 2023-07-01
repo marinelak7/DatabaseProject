@@ -9,6 +9,7 @@ public class  Main {
         ArrayList<Location> locations = null; //Μια λίστα που θα αποθηκεύει τις τοποθεσίες
 
 
+
         //Βήμα 1. Διαβάζουμε το map.osm αρχείο και φτιάχνουμε το datafile και το indexfile
         //datafile -> αποτελείται από blocks μεγέθους 32KB και περιλαμβάνει τις εγγραφές
         //indexfile -> οργανώνει τις εγγραφές που είναι αποθηκευμένες στο datafile
@@ -44,7 +45,8 @@ public class  Main {
         //αρχικοποίηση τιμών για να τρέξει το ερώτημα
         double lat = 35.416235; //x
         double lon = 28.113573; //y
-        long id =26455195; //id τοποθεσίας
+        long id =828871311; //id τοποθεσίας
+        double range = 11;
 
         //Μηδενίζω κάθε φορά που ξεκινάει νέα λειτουργικότητα τους χρόνους εκκίνησης και τερματισμού
         starting_time = 0;
@@ -74,9 +76,9 @@ public class  Main {
 
         //----------------------------------------------------------------
 
-        lat = 40.0584068; //x
-        lon = 22.5659899; //y
-        id =970005045; //id τοποθεσίας
+        //lat = 40.0584068; //x
+        //lon = 22.5659899; //y
+        //id =970005045; //id τοποθεσίας
 
         //2. Διαγραφή -> Δυναμική ενημέρωση για διαγραφή από το δένδρο
 
@@ -86,6 +88,7 @@ public class  Main {
         size = locations.size();
         Deletion delete = new Deletion();
         delete.deletetion(id,locations,tree);
+
         if(size !=locations.size())
             System.out.println("Η τοποθεσία διαγράφτηκε επιτυχώς.");
         else
@@ -101,22 +104,59 @@ public class  Main {
         //----------------------------------------------------------------
 
         //3. Ερώτημα περιοχής χωρίς χρήση καταλόγου
-        lat = 40.0584068; //x
-        lon = 22.5659899; //y
-        double range = 10;
 
-        System.out.println("\nΕρώτημα περιοχής χωρίς την χρήση καταλόγου για ακτίνα=" + range + " lat=" + lat + " lon=" + lon);
+        int count = 0;
+        System.out.println("\nΕρώτημα περιοχής χωρίς την χρήση καταλόγου=" + range + " lat: " + lat + " lon: " + lon );
         starting_time = System.currentTimeMillis();
         RangeQuery range_query = new RangeQuery();
         range_query = new RangeQuery();
-        ArrayList<Location> locations_in_range = range_query.range_query_without_index(new Location(-1, lat, lon) , range , locations);
-        for (Location neighbor : locations_in_range){
+        ArrayList<Location> locations_in_range = range_query.range_query_without_index(new Location(-1, lat, lon), range, locations);
+        for (Location neighbor : locations_in_range) {
             System.out.println(neighbor.toString());
+            count++;
+        }
+        System.out.println(count);
+        ending_time = System.currentTimeMillis() - starting_time;
+        System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
+        System.out.println("!-----------------------------------------------");
+
+        starting_time = 0;
+        ending_time = 0;
+
+        //----------------------------------------------------------------
+
+
+        //4. Ερώτημα περιοχής με την χρήση καταλόγου
+        System.out.println("\n Ερώτημα περιοχής με χρήση καταλόγου για range=" + range +" lat=" + lat + " lon=" + lon);
+        starting_time = System.currentTimeMillis();
+        //ArrayList<Location> range_query_index = tree.range_query_with_index(new Point(lat,lon) , range);
+        RangeQuery range_query2 = new RangeQuery();
+        ArrayList<Location> range_query_index = range_query2.range_query_with_index(new Point(lat,lon) , range ,tree);
+        for (Location neighbor2 : range_query_index){
+            System.out.println(neighbor2.toString());
         }
         ending_time = System.currentTimeMillis() - starting_time;
         System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
+        System.out.println("!-----------------------------------------------");
 
+        starting_time = 0;
+        ending_time = 0;
 
+        //----------------------------------------------------------------
+
+        //5. Ερώτημα πλησιέστερων γειτόνων χωρίς την χρήση καταλόγου
+        int k = 5;
+        System.out.println("\n Ερώτημα πλησιέστερων γειτόνων χωρίς χρήση καταλόγου για k=" + k +" lat=" + lat + " lon=" + lon);
+        starting_time = System.currentTimeMillis();
+        KNNQuery knn_query1 = new KNNQuery();ArrayList<Location> knn_query = knn_query1.knn_without_index(locations ,middle, k );
+        ending_time = System.currentTimeMillis() - starting_time;
+        System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
+        System.out.println("!-----------------------------------------------");
+
+        starting_time = 0;
+        ending_time = 0;
+
+        //----------------------------------------------------------------
 
 
 

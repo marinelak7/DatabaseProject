@@ -556,16 +556,7 @@ public class Tree {
         return range_results;
     }*/
 
-    /**
-     * Συνάρτηση που υλοποιεί το ερώτημα k κοντινότερων γειτόνων με τη βοήθεια του indexfile
-     * Επιστρέφει τους k κοντινότερους γείτονες από το σημείο middle
-     * Στη minHeap περιέχονται οι κόμβοι που μπορεί να χρειαστεί να ψάξουμε για τους πιθανούς γείτονες
-     * Στην κορυφή του minHeap αποθηκεύουμε την περιοχή που είναι πιο κοντά στο σημείο middle
-     * Στη maxHeap περιέχονται οι k κοντινότεροι γείτονες
-     * στην κορυφή της στοίβας αποθηκεύουμε την περιοχή που ενώ ανήκει στους k κοντινότερους γείτονες βρίσκεται πιο μακριά από την middle
-     * @param middle σημείο από το οποίο ψάχνουμε τους γείτονες
-     * @param k αριθμός από κοντινότερους γείτονες
-     * */
+
     /*
     public ArrayList<Location> knn_with_index(Point middle, int k) {
         //Arraylist για τα σημεία που θα προκύψουν από το maxHeap
@@ -623,13 +614,9 @@ public class Tree {
 
 
 
-    /**
-     * Συνάρτηση που διαγράφει μια τοποθεσία από το δέντρο
-     * @param id το id του σημείου που θέλουμε να διαγράψουμε
-     * @param locations οι τοποθεσίες όλων των σημείων
-     */
-/*
-    public void delete_from_tree(long id, ArrayList<Location> locations)
+
+
+    /*public void delete_from_tree(long id, ArrayList<Location> locations)
     {
         //κόμβος parent ο οποιος ειναι κενος
         NodeOfTree parent = null;
@@ -698,4 +685,122 @@ public class Tree {
         }
     }*/
 
+    /*public void delete_from_tree(long id, ArrayList<Location> locations)
+    {
+        //κόμβος parent ο οποιος ειναι κενος
+        NodeOfTree parent = null;
+        //λίστα με όλους τους κόμβους του δέντρου
+        ArrayList<NodeOfTree> temptree = new ArrayList<>();
+        temptree.add(getRoot()); //μεσα στη λιστα που εφτιαξα βαζω την ριζα
+        boolean flag = true;
+        while (flag){
+            for(NodeOfTree r : temptree) { //για καθε κομβο r που ειναι αποθηκευμενος στη λιστα temptree
+                if (AllLeaf(temptree) || temptree.isEmpty()) //αν ολα ειναι φυλλα ή το temptree είναι άδειο
+                {
+                    flag = false;
+                    break; //βγες απο την while
+                }
+                //ελέγχω αν ο κομβος r είναι φύλλο
+                if (r.isLeaf()) {
+                    //κρατάμε τον γονιό του κόμβου
+                    parent = new NodeOfTree(r.getRectangle().getX1(),r.getRectangle().getX2(),r.getRectangle().getY1(),r.getRectangle().getY2()); //αρχικοποιει τον κομβο
+                    Data data = new Data(); //φτιαχνει ενα data τυπου LoadData
+                    ArrayList<Point> point = new ArrayList<>(r.getPoints()); // φτιαχνει μια λιστα με σημεια του κομβου r
+                    //παίρνουμε όλα τα στοιχεία που είναι στον κόμβο
+                    // βρίσκουμε τις τοποθεσίες των σημείων του
+                    for (Point p : point) { //διασχιζει τα σημεια μεσα στον κομβο
+                        Location lc = data.find_block(p.getBlockid(), p.getSlotid());
+                        long check = lc.getLocationid(); //παιρνω το id της τοποθεσιας και το βαζω σε μια μεταβλητη
+                        //αν κάποιο από τα σημεία έχει ίδιο id με αυτό που δίνεται ως όρισμα τότε
+                        if (check == id) {
+                            flag = false;
+                            //δημιουργία προσωρινού δέντρου και αφαίρεση από τη λίστα το σημείο αυτό αφαιρώντας την τοποθεσία του
+                            ArrayList<Point> temp = parent.getPoints();
+                            ArrayList<Location> tempLoc = new ArrayList<>(locations);
+                            for (Location l : tempLoc) {
+                                if (l.getLocationid() == check) {
+                                    locations.remove(l);
+                                }
+                            }
+                            parent.setPoints(temp);  //clear και αρχικοποιηση
+                            //έλεγχος πληρότητας:
+                            //αν ο κόμβος είναι λιγότερο από το 50% γεμάτος με σημεία τότε
+                            // θα πρέπει να γίνει η αναδιαμόρφωση στο δέντρο
+                            if (parent.getPoints().size() <= 3) { //γιατι το max ειναι 5
+                                temp = parent.getPoints();
+                                parent.setPoints(new ArrayList<>());
+                                //διαγραφή των τοποθεσιών που έμειναν ορφανές
+                                for (Point t : temp) { //για καθε σημειο που βρισκεται μεσα στο temp
+                                    for (Location l : tempLoc) { //για καθε τοποθεσια που βρισκεται το tempLoc
+                                        if (l.getLocationid() == data.find_block(t.getBlockid(), t.getSlotid()).getLocationid())
+                                            locations.remove(l);
+                                    }
+                                    //εισαγωγή των ορφανών τοποθεσιών στο δέντρο
+                                    RWFiles lOSM = new RWFiles();
+                                    lOSM.add_location(data.find_block(t.getBlockid(), t.getSlotid()), data.Read_Data());
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+                parent = r;
+            }
+            temptree.remove(parent);
+            temptree.addAll(parent.getChildren());
+
+        }*/
+
+
+    /*public ArrayList<Location> range_query_with_index(Point middle, double radius) {
+        //ArrayList τις τοποθεσίες που βρίσκονται μέσα στο radius
+        ArrayList<Location> range_results=new ArrayList<>();
+        //ArrayList με τα στοιχεία που βρίσκονται μέσα στο radius
+        ArrayList<Point> points = new ArrayList<>();
+        //διαβάζει από το datafile
+        Data data=new Data();
+        //αν η απόσταση της ρίζα από το σημείο middle είναι μικρότερο από την τιμή της ακτίνας
+        //τότε βάζουμε τη ρίζα στη στοίβα
+        if (root.getRectangle().find_distance_between_point_and_Rectangle(middle) <= radius) {
+            Stack<NodeOfTree> dfs_stack = new Stack<>();
+            dfs_stack.push(root);
+            //όσο η στοίβα δεν είναι άδεια
+            while (!dfs_stack.empty()) {
+                //κάνουμε pop τον πρώτο κόμβο της στοίβας
+                NodeOfTree node = dfs_stack.pop();
+                for (int i = 0; i < node.getChildren().size(); i++) {
+                    //αν ο κόμβος που βγήκε από τη στοίβα είναι φύλλο τότε
+                    //ελέγχουμε αν τα σημεία που ανήκουν μέσα στον κόμβο βρίσκονται εντός της ακτίνας radius
+                    //αν ισχύει αυτό τότε προσθέτουμε τα σημεία αυτά στο points
+                    if (node.getChildren().get(i).isLeaf()) {
+                        for (int k = 0; k < node.getChildren().get(i).getPoints().size(); k++) {
+                            if (node.getChildren().get(i).getPoints().get(k).find_distance_from_point(middle) <= radius) {
+                                points.add(node.getChildren().get(i).getPoints().get(k));
+                            }
+                        }
+                    }
+                    //αν ο κόμβος που βγήκε από τη στοίβα δεν είναι φύλλο τότε
+                    //ελέγχουμε αν τα mbr των παιδιών του είναι εντός της ακτίνας radius
+                    //αν ισχύει η συνθήκη τότε βάζουμε τα παιδιά του κόμβου στη στοίβα
+                    else {
+                        if (node.getChildren().get(i).getRectangle().find_distance_between_point_and_Rectangle(middle) <= radius) {
+                            dfs_stack.push(node.getChildren().get(i));
+                        }
+                    }
+                }
+            }
+        }
+        //αποθηκεύουμε τα δεκτά σημεία στη range_results
+        for(int i=0;i<points.size();i++){
+            Location loc = (data.find_block(points.get(i).getBlockid(),points.get(i).getSlotid()));
+            loc.find_manhattan_distance_between_two_points(middle.getLat(),middle.getLon());
+            range_results.add(loc);
+        }
+        return range_results;
+    }*/
+
 }
+
+
+

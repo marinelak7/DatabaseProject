@@ -169,12 +169,12 @@ public class Data {
             accessFile.skipBytes(20); //μεταδεδομενα
             accessFile.skipBytes(32768 * --blockid); //ολα τα blockid
             accessFile.skipBytes(8); //blockid
-            accessFile.skipBytes(24*slotid); //ολα τα slotid
+            accessFile.skipBytes(24 * slotid); //ολα τα slotid
             //κρατάμε μόνο το id του location , lat , lon που μας χρειαζεται
-            long id= accessFile.readLong();
-            double lat=accessFile.readDouble();
-            double lon=accessFile.readDouble();
-            Location location = new Location(id,lat,lon); //οριζουμε ενα location
+            long id = accessFile.readLong();
+            double lat = accessFile.readDouble();
+            double lon = accessFile.readDouble();
+            Location location = new Location(id, lat, lon); //οριζουμε ενα location
             return location; //το επιστρέφουμε
 
         } catch (FileNotFoundException e) {
@@ -200,7 +200,7 @@ public class Data {
             file.skipBytes(8); //Skip blockid
 
 
-            file.skipBytes(16 *slotid); //Skip τα slotid
+            file.skipBytes(24 *slotid); //Skip τα slotid
 
             //Ώστε να μείνουν τα location id , lat και lon που χρειαζόμαστε
             //Διάβασε τα
@@ -226,4 +226,6 @@ public class Data {
 
         return location;
     }
+
+
 }

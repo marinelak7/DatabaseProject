@@ -156,8 +156,8 @@ public class RWFiles {
     }
 
 
-    /*
-    public void add_location(Location location, ArrayList<Location> locations) {
+
+    /*public void add_location(Location location, ArrayList<Location> locations) {
         //προσθέτουμε την τοποθεσία στη λίστα με τις υπόλοιπες τοποθεσίες
         //επαναλαμβάνουμε την ίδια διαδικασία με πριν
         locations.add(location);
