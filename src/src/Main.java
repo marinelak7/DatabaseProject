@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Main {
+public class  Main {
 
     private static Tree tree = new Tree(new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE));
 
@@ -101,6 +101,22 @@ public class Main {
         //----------------------------------------------------------------
 
         //3. Ερώτημα περιοχής χωρίς χρήση καταλόγου
+        lat = 40.0584068; //x
+        lon = 22.5659899; //y
+        double range = 10;
+
+        System.out.println("\nΕρώτημα περιοχής χωρίς την χρήση καταλόγου για ακτίνα=" + range + " lat=" + lat + " lon=" + lon);
+        starting_time = System.currentTimeMillis();
+        RangeQuery range_query = new RangeQuery();
+        range_query = new RangeQuery();
+        ArrayList<Location> locations_in_range = range_query.range_query_without_index(new Location(-1, lat, lon) , range , locations);
+        for (Location neighbor : locations_in_range){
+            System.out.println(neighbor.toString());
+        }
+        ending_time = System.currentTimeMillis() - starting_time;
+        System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
+
+
 
 
 

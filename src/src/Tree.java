@@ -1,3 +1,4 @@
+import javax.swing.tree.TreeNode;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -140,6 +141,7 @@ public class Tree {
     }
 
 
+
     /**
      * Συνάρτηση που χωρίζει έναν κόμβο σε δύο
      * Υλοποιήθηκε σύμφωνα με το paper του R*Tree που αναρτήθηκε στη σελίδα του μαθήματος
@@ -170,6 +172,7 @@ public class Tree {
                 int _k = 0;
                 //χωρίζουμε τα σημεία που ήταν στον αρχικό κόμβο
                 //τοποθετούμε τα μισά στον πρώτο ΠΡΟΣΩΡΙΝΟ κόμβο
+
                 for (; _k < min - 1 + k; _k++) {
                     node1.add_new_point(node.getPoints().get(_k));
                 }
@@ -177,6 +180,7 @@ public class Tree {
                 for (; _k < max + 1; _k++) {
                     node2.add_new_point(node.getPoints().get(_k));
                 }
+
                 // υπολογίζουμε το άθροισμα των περιμέτρων των δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων όταν ταξινομομούμε σύμφωνα με στο x
                 double perx = node1.getRectangle().getPerimeter() + node2.getRectangle().getPerimeter();
                 perimeter_X += perx;
@@ -408,9 +412,11 @@ public class Tree {
         //τότε προσθέτουμε σε αυτόν το σημείο αυτό και ανανεώνουμε το μονοπάτι
         if (node.getPoints().size() < max) {
             node.add_new_point(new_point);
-            for (int i = 0; i < node_path.size(); i++) {
+            updatePathDimensions(new_point);
+
+            /*for (int i = 0; i < node_path.size(); i++) {
                 node_path.get(i).getRectangle().set_New_Dimensions(new_point.getLat(), new_point.getLon());
-            }
+            }*/
         }
         //αλλιώς αν το πλήθος των παιδιών ξεπερνάει τον μέγιστο αριθμό παιδιών που μπορεί να έχει ένας κόμβος
         //πρέπει να κάνουμε split
@@ -423,9 +429,10 @@ public class Tree {
                 newRoot.add_new_child_node(splitted_node.get(0));
                 newRoot.add_new_child_node(splitted_node.get(1));
                 root = newRoot;
-                for (int i = 0; i < node_path.size(); i++) { //ανανεωνει το path
+                updatePathDimensions(new_point);
+                /*for (int i = 0; i < node_path.size(); i++) { //ανανεωνει το path
                     node_path.get(i).getRectangle().set_New_Dimensions(new_point.getLat(), new_point.getLon());
-                }
+                }*/
             }
             //κάνουμε split μεγαλύτερο μέρος του δέντρου
             else { //εαν δεν εχουμε μονο την ριζα
@@ -475,11 +482,18 @@ public class Tree {
 
                         }
                     }
-                    for (int i = 0; i < node_path.size(); i++) {
+                    updatePathDimensions(new_point);
+                    /*for (int i = 0; i < node_path.size(); i++) {
                         node_path.get(i).getRectangle().set_New_Dimensions(new_point.getLat(), new_point.getLon());
-                    }
+                    }*/
                 }
             }
+        }
+    }
+
+    private void updatePathDimensions(Point new_point) {
+        for (int i = 0; i < node_path.size(); i++) {
+            node_path.get(i).getRectangle().set_New_Dimensions(new_point.getLat(), new_point.getLon());
         }
     }
 
