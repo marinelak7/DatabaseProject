@@ -87,7 +87,7 @@ public class  Main {
         starting_time = System.currentTimeMillis();
         size = locations.size();
         Deletion delete = new Deletion();
-        delete.deletetion(id,locations,tree);
+        delete.deletion(id,locations,tree);
 
         if(size !=locations.size())
             System.out.println("Η τοποθεσία διαγράφτηκε επιτυχώς.");

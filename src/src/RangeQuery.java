@@ -29,7 +29,13 @@ public class RangeQuery {
         }
         return locations_in_range;
     }*/
-
+    /**
+     * Ερωτήματα περιοχής με σειριακή αναζήτηση
+     * @param center
+     * @param radius
+     * @param locations
+     * @return λίστα με locations
+     */
     public static ArrayList<Location> range_query_without_index ( Location center , double radius , ArrayList<Location> locations){
 
         ArrayList<Location> locationsInRange = new ArrayList<>(); //Φτιάχνω μια λίστα με τα locations που βρίσκονται μέσα στον κύκλο γύρω απο το στοιχειο center
@@ -43,6 +49,14 @@ public class RangeQuery {
         return locationsInRange;
     }
 
+    /**
+     * Συνάρτηση που υπολογίζει την απόσταση μεταξύ δυο σημείων και την συγκρίνει με την ακτίνα
+     * Αν είναι μικρότερη ή ίση επιστρέφει true αλλιώς false
+     * @param location
+     * @param center
+     * @param radius
+     * @return
+     */
     private static boolean isWithinRadius(Location location, Location center, double radius) {
 
         double manhattanDistance = location.find_manhattan_distance_between_two_points(center.getLat(), center.getLon());
@@ -50,7 +64,13 @@ public class RangeQuery {
         return manhattanDistance <= radius; //boolean
     }
 
-
+    /**
+     * Ερωτήματα περιοχής με χρήση του καταλόγου indexfile
+     * @param middle
+     * @param radius
+     * @param tree
+     * @return
+     */
     public ArrayList<Location> range_query_with_index(Point middle, double radius , Tree tree) {
         ArrayList<Location> rangeResults = new ArrayList<>();
         ArrayList<Point> points = new ArrayList<>();
@@ -84,6 +104,13 @@ public class RangeQuery {
         return rangeResults;
     }
 
+    /**
+     * Συνάρτηση που γεμίζει την λίστα points αν η απόσταση των σημείων του φύλλου είναι μικρότερη ή ίση της ακτίνας
+     * @param node
+     * @param middle
+     * @param radius
+     * @param points
+     */
     private void processLeafNode(NodeOfTree node, Point middle, double radius, ArrayList<Point> points) {
         for (int k = 0; k < node.getPoints().size(); k++) { //Για κάθε σημείο του φύλλου
             if (node.getPoints().get(k).find_distance_from_point(middle) <= radius) { //Αν η απόσταση των σημείων του φύλλου είναι <= ακτίνα
@@ -92,6 +119,13 @@ public class RangeQuery {
         }
     }
 
+    /**
+     * Συνάρτηση που γεμίζει την στόιβα με παιδιά αν η απόσταση των ορθογωνίων των παιδιών είναι μικρότερη ή ίση της ακτίνας
+     * @param node
+     * @param middle
+     * @param radius
+     * @param dfs
+     */
     private void processNonLeafNode(NodeOfTree node, Point middle, double radius, Stack<NodeOfTree> dfs) {
         if (node.getRectangle().find_distance_between_point_and_Rectangle(middle) <= radius) { //Αν η απόσταση των ορθογωνίων των παιδιών <= ακτίνα
             dfs.push(node); //Βάλε στη στοίβα το παιδί

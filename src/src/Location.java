@@ -4,12 +4,9 @@ import static java.lang.Math.abs;
  * Η κλάση αυτή αναπαριστά μια τοποθεσία με lat (x) και lon (y) στο osm αρχείο
  */
 public class Location implements Comparable<Location>{
-    //id του κάθε κόμβου στο αρχείο .osm
-    private long locationid;
-    //lat και lon κάιθε κόμβου στο αρχείο .osm
-    private double lat, lon;
-    //απόσταση που απέχει μια τοποθεσία από μια άλλη
-    private double distance;
+    private long locationid;//id της τοποθεσίας δηλαδή του κάθε κόμβου στο map.osm
+    private double lat, lon;//latitude και το longitude του κάθε κόμβου στο map.osm
+    private double distance;//απόσταση που απέχει μια τοποθεσία από μια άλλη
 
     /**
      * Constructor για την κλάση Location

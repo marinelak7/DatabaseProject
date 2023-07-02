@@ -289,7 +289,7 @@ public class Tree {
         else {
             //κάνε ταξινόμηση των κόμβων σύμφωνα με τις τιμές των ορθογωνίων τους ως προς τον άξονα x
             // (από την πιο μικρή τιμή προς την πιο μεγάλη)
-            node.getChildren().sort(new NodeOfTree.RectangleComparatorX());
+            node.getChildren().sort(new NodeOfTree.ComparatorX());
             for (int k = 1; k < max - 2 * min + 2; k++) {
                 //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων
                 NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
@@ -327,7 +327,7 @@ public class Tree {
             //αν η πρώτη περίμετρος είναι μικρότερο τότε
             if (perimeter_X < perimeter_Y) {
                 //γίνεται πάλι ταξινόμηση των κόμβων σύμφωνα με τις τιμές των ορθογωνίων τους ως προς τον άξονα x
-                node.getChildren().sort(new NodeOfTree.RectangleComparatorX());
+                node.getChildren().sort(new NodeOfTree.ComparatorX());
                 for (int k = 1; k < max - 2 * min + 2; k++) {
                     //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων
                     NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
@@ -491,6 +491,10 @@ public class Tree {
         }
     }
 
+    /**
+     * Βοηθητική μέθοδος για ανανέωση μονοπατιού
+     * @param new_point
+     */
     private void updatePathDimensions(Point new_point) {
         for (int i = 0; i < node_path.size(); i++) {
             node_path.get(i).getRectangle().set_New_Dimensions(new_point.getLat(), new_point.getLon());

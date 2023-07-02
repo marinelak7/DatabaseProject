@@ -5,14 +5,9 @@ import java.io.Serializable;
 /** Κλάση που αναπαριστά ένα ορθογώνιο
  */
 public class Rectangle implements Serializable {
-    //η μικρότερη τιμή στον άξονα x
-    private double x1;
-    //η μεγαλύτερη τιμή στον άξονα x
-    private double x2=0;
-    //η μικρότερη τιμή στον άξονα y
-    private double y1;
-    //η μεγαλύτερη τιμή στον άξονα y
-    private double y2=0;
+
+    private double x1,y1 ; //Μικρότερες τιμές
+    private double x2 = 0 , y2 = 0 ; //Μεγαλύτερες τιμές
 
     /**
      * Constructor του ορθογωνίου
@@ -59,7 +54,7 @@ public class Rectangle implements Serializable {
 
 
     /**
-     * Μέθοδος που επιστρέφει όλες τις τιμές που χαρακτηρίζουν το ορθογώνιο
+     *  Getter όλων των τιμών που χαρακτηρίζουν το ορθογώνιο
      */
     public ArrayList<Double> getAllValues(){
         ArrayList<Double> all_rectangle_values = new ArrayList<>(4);
@@ -263,9 +258,6 @@ public class Rectangle implements Serializable {
         return 0;
     }
 
-    /**
-     * Μέθοδος που υπολογίζει την επικάλυψη που υπάρχει μεταξύ δύο ορθογωνίων
-     */
     /*public double calculate_overlap(Rectangle second_rectangle){
         double xx1=second_rectangle.getX1();
         double xx2=second_rectangle.getX2();
@@ -282,6 +274,9 @@ public class Rectangle implements Serializable {
         return overlap_x*overlap_y;
     }*/
 
+    /**
+     * Μέθοδος που υπολογίζει την επικάλυψη που υπάρχει μεταξύ δύο ορθογωνίων
+     */
     public double calculate_overlap(Rectangle secondRectangle) {
         //Πρώτο ορθογώνιο
         double x1 = getX1();
@@ -309,6 +304,9 @@ public class Rectangle implements Serializable {
         return overlap_x * overlap_y;
     }
 
+    /**
+     * Βοηθητική μέθοδος για υπολογισμό επικάλυψης
+     */
     private double calculateOverlapAxis(double a1, double a2, double b1, double b2) {
         double overlap = Math.max(0, Math.min(a2, b2) - Math.max(a1, b1));
         return overlap;

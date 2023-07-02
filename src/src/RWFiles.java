@@ -41,9 +41,9 @@ public class RWFiles {
         dos.writeChar('0');
         dos.writeChar('0');
 
-        dos.writeInt(1234);   //συνολικός αριθμός από μπλοκς
-        dos.writeInt(1234);
-        dos.writeInt(entriesPerBlock);   //συνολικός αριθμός από εισαγωγές
+        dos.writeInt(1342); //συνολικός τυχαίος αριθμός από μπλοκς
+        dos.writeInt(1342);
+        dos.writeInt(entriesPerBlock); //συνολικός αριθμός από εισαγωγές
 
 
         int blocks_Number = 1; //αριθμος των blocks
@@ -54,8 +54,8 @@ public class RWFiles {
         int count = 0; //αριθμος εγγραφων
 
         //δημιουργία document builder -> αναλυση εγγραφων xml
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); //Obtain an instance of `DocumentBuilderFactory` using the static `newInstance()` method.
-        DocumentBuilder builder = factory.newDocumentBuilder(); //Create a `DocumentBuilder` instance from the factory using the `newDocumentBuilder()` method.
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); //Δημιουργήστε ένα στιγμιότυπο του `DocumentBuilderFactory` χρησιμοποιώντας τη στατική μέθοδο `newInstance()`.
+        DocumentBuilder builder = factory.newDocumentBuilder(); //Δημιουργία του `DocumentBuilder` στιγμιότυπο χρησιμοποιώντας την μέθοδο `newDocumentBuilder()`.
         Document document = builder.parse(new File("map.osm")); //Χρησιμοποιήστε το αντικείμενο `DocumentBuilder` για να αναλύσετε έγγραφα XML.
 
         //επιστρέφει το ριζικό στοιχείο του εγγράφου XML

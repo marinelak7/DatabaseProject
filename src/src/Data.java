@@ -42,7 +42,9 @@ public class Data {
             //0 = starting index και 20 = τελευταίο στοιχείο
             inputstream.read(data_bytes, 0, 20); //ο αριθμός των byte που πραγματικά διαβάστηκαν
 
-
+            //Επειδή είναι Integers πιάνουν 4 bytes
+            //αυτή η γραμμή κώδικα αντιγράφει τα πρώτα 4 byte από τον πίνακα data_bytes και τα αποθηκεύει στον αντίστοιχο πίνακα κάθε φορά
+            // ξεκινώντας από το ευρετήριο 0.
             byte[] number_of_blocks = new byte[4]; //Ο συνολικός αριθμός απο μπλοκ
             byte[] number_of_entries = new byte[4]; //Ο συνολικός αριθμός εγγραφών
             byte[] records_per_block = new byte[4]; //Ο αριθμός εγγραφών σε κάθε μπλοκ
@@ -100,7 +102,7 @@ public class Data {
                 byte[][] Latitudes = new byte[block_records][8];
                 byte[][] Longitudes = new byte[block_records][8];
 
-
+                //Αρχικοποίηση βοηθητικών μεταβλητών
                 int k = 0;
                 int l = 0;
                 int i = 0;
@@ -143,7 +145,7 @@ public class Data {
                     double buf_lon = bl.get();
 
                     if (buf_id == 0 && buf_lat == 0 && buf_lon == 0) { //δεν υπάρχουν πλέον έγκυρες εγγραφές στο τρέχον μπλοκ
-                        break; //βγες απo τo loop
+                        break; //βγες απo την for
                     }
                     locationsArrayList.add(new Location(buf_id, buf_lat, buf_lon)); //Βάλτο στην λίστα με τα locations που διαβάστηκαν απ'το datafile
                 }
@@ -224,7 +226,7 @@ public class Data {
             }
         }
 
-        return location;
+        return location;//Επέστρεψε το location που βρήκες στο συγκεκριμένο blockid και slotid, εκτός και αν δεν υπάρχει επέστρεψε null
     }
 
 

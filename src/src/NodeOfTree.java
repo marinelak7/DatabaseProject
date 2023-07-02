@@ -85,9 +85,8 @@ public class NodeOfTree implements Serializable {
     /**
      * Μέθοδος που επιστρέφει αν ένας κόμβος είναι φύλλο ή όχι
      */
-    public boolean isLeaf(){
-        return children.isEmpty() ;
-    }
+    public boolean isLeaf()
+    {return children.isEmpty();}//Αν η λίστα με τα παιδιά που ο κόμβος δεν είναι φύλλο είναι άδεια τότε ο κόμβος είναι φύλλο
 
     /**
      * Μέθοδος που προσθέτει έναν καινούργιο κόμβο ως παιδί αν ο κόμβος-γονιός δεν είναι φύλλο
@@ -101,17 +100,16 @@ public class NodeOfTree implements Serializable {
     }
 
     /**
-     * Μέθοδος που προσθέτει ένα σημείο ως παιδί αν ο κόμβος-γονιός είναι φύλλο
+     * Συνάρτηση η οποία προσθέτει ένα νέο σημείο ως παιδί ενός κόμβου γονιού που είναι φύλλο
      * @param new_point το σημείο που θέλουμε να προσθέσουμε
      */
     public void add_new_point(Point new_point){
-        //
-        points.add(new_point);
-        rectangle.set_New_Dimensions(new_point.getLat(),new_point.getLon());
+        points.add(new_point);//βάζει το νέο σημείο στη λίστα με τα σημεία
+        rectangle.set_New_Dimensions(new_point.getLat(),new_point.getLon());//Αλλάζει τις διαστάσεις του ορθογωνίου λόγω εισαγωγής σημείου
     }
 
     /**
-     * Συνάρτηση που προσθέτει καινούργια παιδιά σε έναν κόμβο
+     * //Συνάρτηση τύπου setter για τα σημεία μέσα στη λίστα
      * @param points λίστα από σημεία που θέλουμε να προσθέσουμε
      */
     public void add_children_nodes(ArrayList<Point> points){
@@ -119,10 +117,9 @@ public class NodeOfTree implements Serializable {
     }
 
     /**
-     * Συνάρτηση που συγκρίνει δύο κόμβους σύμφωνα με τις τιμές των ορθογωνίων τους
-     * πρώτα γίνεται ταξινόμηση ως προς τη μικρότερη τιμή του x και μετά ως προς τη μεγαλύτερη τιμή του x
+     * Συνάρτηση που συγκρίνει δύο κόμβους με τα βάση τις τιμές στον άξονα x των ορθογωνίων τους
      */
-    static class RectangleComparatorX implements Comparator<NodeOfTree> {
+    static class ComparatorX implements Comparator<NodeOfTree> {
         @Override
         public int compare(NodeOfTree o1, NodeOfTree o2) {
             if(o1.getRectangle().getAllValues().get(0) > o2.getRectangle().getAllValues().get(0)){
@@ -150,8 +147,7 @@ public class NodeOfTree implements Serializable {
 
 
     /**
-     * Συνάρτηση που συγκρίνει δύο κόμβους σύμφωνα με τις τιμές των ορθογωνίων τους
-     * πρώτα γίνεται ταξινόμηση ως προς τη μικρότερη τιμή του y και μετά ως προς τη μεγαλύτερη τιμή του y
+     Συνάρτηση που συγκρίνει δύο κόμβους με βάση τις τιμές y των ορθογωνίων τους
      */
     static class RectangleComparatorY implements Comparator<NodeOfTree>{
         @Override

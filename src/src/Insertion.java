@@ -29,9 +29,9 @@ public class Insertion {
             int numBlocks = (size / entriesPerBlock) + 1; //Ο αριθμός του μπλόκ που βρισκόμαστε
 
 
-            dos.writeInt(numBlocks);
-            dos.writeInt(size);
-            dos.writeInt(entriesPerBlock);
+            dos.writeInt(numBlocks);// Αριθμός μπλοκς
+            dos.writeInt(size);// Συνολικός αριθμός εισαγωγών
+            dos.writeInt(entriesPerBlock);// Εισαγωγές ανά μπλοκ
 
 
             int blocks_Number = 1;

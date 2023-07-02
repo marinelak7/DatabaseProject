@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Deletion {
 
-    public void deletetion (long id, ArrayList<Location> locations , Tree tree){
+    public void deletion (long id, ArrayList<Location> locations , Tree tree){
 
         NodeOfTree parent = null; //Κενός κόμβος
         ArrayList<NodeOfTree> temp_nodes = new ArrayList<>(); //Φτιάχνω μια λίστα με όλους τους κόμβους
