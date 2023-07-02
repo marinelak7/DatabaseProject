@@ -504,7 +504,7 @@ public class Tree {
 
 
 
-    /**
+   /* /**
      * Συνάρτηση που υλοποιεί τα ερωτήματα περιοχής με τη βοήθεια του indexfile
      * Επιστρέφει τους γείτονες που βρίσκονται μέσα στον "κύκλο" γύρω από το στοιχείο middle
      * Χρησιμοποιεί μια στοίβα (για τον αλγόριθμο DFS) όπου σπρώχνουμε έναν κόμβο εάν είναι μια πιθανή επιλογή να κρατήσουμε γείτονες
@@ -561,12 +561,12 @@ public class Tree {
     }*/
 
 
-    /*
+
     public ArrayList<Location> knn_with_index(Point middle, int k) {
         //Arraylist για τα σημεία που θα προκύψουν από το maxHeap
         ArrayList<Point> knn_points = new ArrayList<>();
         //διαβάζει τα δεδομένα από το datafile
-        LoadData data=new LoadData();
+        Data data=new Data();
         MinHeap minHeap = new MinHeap(100);
         MaxHeap maxHeap = new MaxHeap(k);
         //βάζουμε στη minheap τα παιδιά της ρίζας
@@ -576,14 +576,14 @@ public class Tree {
         }
 
         //όσο η minheap δεν είναι άδεια
-        while (!minHeap.isEmpty()) {
+        while (!minHeap.MINHeap_Empty()) {
             //βγαίνει το στοιχείο που βρίσκεται πιο πάνω στη σωρό
-            NodeOfTree pop = minHeap.remove();
+            NodeOfTree pop = minHeap.remove_from_heap();
             //ψάξε το παιδί του κόμβου που βγήκε του οποίου το rectangle είναι πιο κοντά στο σημείο middle
             for (NodeOfTree child : pop.getChildren()) {
                 child.setDistance_from_point(child.getRectangle().find_distance_between_point_and_Rectangle(middle));
                 //αν το παιδί δεν είναι φύλλο και έχουμε λιγότερους από k γείτονες τότε βάζουμε τον κόμβο στο minHeap
-                if (!child.isLeaf() && (maxHeap.getSize() < k))
+                if (!child.isLeaf() && (maxHeap.getCount() < k))
                     minHeap.insert_to_minHeap(child);
                     //αν το παιδί δεν είναι φύλλο και έχουμε k γείτονες τότε
                     // πρέπει να κρατήσουμε του κοντινότερους και αν χρειαστεί να αλλάξουμε το maxHeap (του γείτονες δηλαδή)
@@ -603,7 +603,7 @@ public class Tree {
         }
         //βάζουμε στο knn_points τα σημεία που έχουν προκύψει από το maxHeap
         for (int i = 0; i < k; i++) {
-            knn_points.add(maxHeap.extractMax());
+            knn_points.add(maxHeap.popMax());
         }
         //δημιουργία ArrayList για τις τοποθεσίες των σημείων από το knn_points
         ArrayList<Location> knn_results=new ArrayList<>();
@@ -613,8 +613,7 @@ public class Tree {
             knn_results.add(neighbor);
         }
         return knn_results;
-    }*/
-
+    }
 
 
 

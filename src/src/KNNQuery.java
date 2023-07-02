@@ -45,6 +45,60 @@ public class KNNQuery {
 
     }
 
+   /* public ArrayList<Location> knn_with_index(Point middle, int k) {
+        //Arraylist για τα σημεία που θα προκύψουν από το maxHeap
+        ArrayList<Point> knn_points = new ArrayList<>();
+        //διαβάζει τα δεδομένα από το datafile
+        Data data=new Data();
+        MinHeap minHeap = new MinHeap(100);
+        MaxHeap maxHeap = new MaxHeap(k);
+        //βάζουμε στη minheap τα παιδιά της ρίζας
+        for (NodeOfTree node : root.getChildren()) {
+            node.setDistance_from_point(node.getRectangle().find_distance_between_point_and_Rectangle(middle));
+            minHeap.insert_to_minHeap(node);
+        }
+
+        //όσο η minheap δεν είναι άδεια
+        while (!minHeap.MINHeap_Empty()) {
+            //βγαίνει το στοιχείο που βρίσκεται πιο πάνω στη σωρό
+            NodeOfTree pop = minHeap.remove_from_heap();
+            //ψάξε το παιδί του κόμβου που βγήκε του οποίου το rectangle είναι πιο κοντά στο σημείο middle
+            for (NodeOfTree child : pop.getChildren()) {
+                child.setDistance_from_point(child.getRectangle().find_distance_between_point_and_Rectangle(middle));
+                //αν το παιδί δεν είναι φύλλο και έχουμε λιγότερους από k γείτονες τότε βάζουμε τον κόμβο στο minHeap
+                if (!child.isLeaf() && (maxHeap.getCount() < k))
+                    minHeap.insert_to_minHeap(child);
+                    //αν το παιδί δεν είναι φύλλο και έχουμε k γείτονες τότε
+                    // πρέπει να κρατήσουμε του κοντινότερους και αν χρειαστεί να αλλάξουμε το maxHeap (του γείτονες δηλαδή)
+                else if (!child.isLeaf()) {
+                    if (maxHeap.getMax().getDistance_point() >= child.getDistance_from_point())
+                        minHeap.insert_to_minHeap(child);
+                }
+                //αν το παιδί είναι φύλλο τότε πρόσθεσε τα σημεία του στο maxHeap
+                else {
+                    ArrayList<Point> points = child.getPoints();
+                    for (Point point : points) {
+                        point.setDistance_point(point.find_distance_from_point(middle));
+                        maxHeap.insert_to_maxHeap(point);
+                    }
+                }
+            }
+        }
+        //βάζουμε στο knn_points τα σημεία που έχουν προκύψει από το maxHeap
+        for (int i = 0; i < k; i++) {
+            knn_points.add(maxHeap.popMax());
+        }
+        //δημιουργία ArrayList για τις τοποθεσίες των σημείων από το knn_points
+        ArrayList<Location> knn_results=new ArrayList<>();
+        for(int i=0;i<knn_points.size();i++){
+            Location neighbor=data.find_block(knn_points.get(i).getBlockid(),knn_points.get(i).getSlotid());
+            neighbor.setDistance(knn_points.get(i).getDistance_point());
+            knn_results.add(neighbor);
+        }
+        return knn_results;
+    }
+
+*/
 
 
 
