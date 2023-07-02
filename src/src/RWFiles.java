@@ -56,12 +56,12 @@ public class RWFiles {
         //δημιουργία document builder -> αναλυση εγγραφων xml
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); //Δημιουργήστε ένα στιγμιότυπο του `DocumentBuilderFactory` χρησιμοποιώντας τη στατική μέθοδο `newInstance()`.
         DocumentBuilder builder = factory.newDocumentBuilder(); //Δημιουργία του `DocumentBuilder` στιγμιότυπο χρησιμοποιώντας την μέθοδο `newDocumentBuilder()`.
-        Document document = builder.parse(new File("map.osm")); //Χρησιμοποιήστε το αντικείμενο `DocumentBuilder` για να αναλύσετε έγγραφα XML.
+        Document document = builder.parse(new File("map2.osm")); //Χρησιμοποιήστε το αντικείμενο `DocumentBuilder` για να αναλύσετε έγγραφα XML.
 
         //επιστρέφει το ριζικό στοιχείο του εγγράφου XML
         document.getDocumentElement().normalize(); //διαδικασία κανονικοποίησης της δομής του εγγράφου XML
 
-        //αρχικοποίηση ρίζας
+        //ρίζα
         Element root = document.getDocumentElement();
 
         //δημιουργία node list
