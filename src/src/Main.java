@@ -167,9 +167,9 @@ public class  Main {
         System.out.println("\n Ερώτημα πλησιέστερων γειτόνων με χρήση καταλόγου για k=" + k +" lat=" + lat + " lon=" + lon);
         starting_time = System.currentTimeMillis();
         Point new_point = new Point(lat, lon);
-       // KNNQuery knn_query2 = new KNNQuery();
-       // ArrayList<Location> knn_query_index = knn_query2.knn_with_index(new_point, k);
-        ArrayList<Location> knn_query_index = tree.knn_with_index(new_point, k);
+        KNNQuery knn_query2 = new KNNQuery();
+        ArrayList<Location> knn_query_index = knn_query2.knn_with_index(new_point, k,tree);
+        //ArrayList<Location> knn_query_index = tree.knn_with_index(new_point, k);
         for (Location neighbor4 : knn_query_index){
             System.out.println(neighbor4.toString());
         }

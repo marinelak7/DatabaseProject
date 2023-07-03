@@ -562,7 +562,7 @@ public class Tree {
 
 
 
-    public ArrayList<Location> knn_with_index(Point middle, int k) {
+/*    public ArrayList<Location> knn_with_index(Point middle, int k) {
         //Arraylist για τα σημεία που θα προκύψουν από το maxHeap
         ArrayList<Point> knn_points = new ArrayList<>();
         //διαβάζει τα δεδομένα από το datafile
@@ -615,7 +615,7 @@ public class Tree {
         return knn_results;
     }
 
-
+*/
 
 
 

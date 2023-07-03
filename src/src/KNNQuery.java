@@ -45,7 +45,7 @@ public class KNNQuery {
 
     }
 
-   /* public ArrayList<Location> knn_with_index(Point middle, int k) {
+   public ArrayList<Location> knn_with_index(Point middle, int k , Tree tree) {
         //Arraylist για τα σημεία που θα προκύψουν από το maxHeap
         ArrayList<Point> knn_points = new ArrayList<>();
         //διαβάζει τα δεδομένα από το datafile
@@ -53,7 +53,7 @@ public class KNNQuery {
         MinHeap minHeap = new MinHeap(100);
         MaxHeap maxHeap = new MaxHeap(k);
         //βάζουμε στη minheap τα παιδιά της ρίζας
-        for (NodeOfTree node : root.getChildren()) {
+        for (NodeOfTree node : tree.getRoot().getChildren()) {
             node.setDistance_from_point(node.getRectangle().find_distance_between_point_and_Rectangle(middle));
             minHeap.insert_to_minHeap(node);
         }
@@ -98,7 +98,7 @@ public class KNNQuery {
         return knn_results;
     }
 
-*/
+
 
 
 
