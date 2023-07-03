@@ -42,10 +42,17 @@ public class  Main {
 
         //Εδώ ξεκινούν οι απαιτούμενες λειτουργικότητες
 
-        //αρχικοποίηση τιμών για να τρέξει το ερώτημα
-        double lat = 35.416235; //x
+        //αρχικοποίηση τιμών
+        /*double lat = 35.416235; //x
         double lon = 28.113573; //y
-        long id =828871311; //id τοποθεσίας
+        long id =828871311; //id τοποθεσίας*/
+
+        double lat = 35.875626; //x
+        double lon = 28.563454; //y
+        long id =828871313; //id τοποθεσίας
+
+
+
 
 
         //Μηδενίζω κάθε φορά που ξεκινάει νέα λειτουργικότητα τους χρόνους εκκίνησης και τερματισμού
@@ -61,6 +68,7 @@ public class  Main {
         int size = locations.size();
         Insertion insertion = new Insertion();
         insertion.add_location(new_location , locations);
+        tree.add_in_tree(new Point(lat,lon));
         Data data2 = new Data();
         locations = data2.Read_Data();
         if(size !=locations.size())
@@ -104,17 +112,17 @@ public class  Main {
         //----------------------------------------------------------------
 
         //3. Ερώτημα περιοχής χωρίς χρήση καταλόγου
-        double range = 45;
+        double range = 20;
         int count = 0;
         System.out.println("\nΕρώτημα περιοχής χωρίς την χρήση καταλόγου για range=" + range + " lat= " + lat + " lon= " + lon );
         starting_time = System.currentTimeMillis();
       RangeQuery range_query = new RangeQuery();
         range_query = new RangeQuery();
         ArrayList<Location> locations_in_range = range_query.range_query_without_index(new Location(-1, lat, lon), range, locations);
-        for (Location neighbor : locations_in_range) {
+        //for (Location neighbor : locations_in_range) {
           //System.out.println(neighbor.toString());
           //count++;
-        }
+        //}
       //System.out.println(count);
         ending_time = System.currentTimeMillis() - starting_time;
         System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
@@ -132,9 +140,9 @@ public class  Main {
         //ArrayList<Location> range_query_index = tree.range_query_with_index(new Point(lat,lon) , range);
         RangeQuery range_query2 = new RangeQuery();
         ArrayList<Location> range_query_index = range_query2.range_query_with_index(new Point(lat,lon) , range ,tree);
-        for (Location neighbor2 : range_query_index){
-      //    System.out.println(neighbor2.toString());
-        }
+        //for (Location neighbor2 : range_query_index){
+          //System.out.println(neighbor2.toString());
+        //}
         ending_time = System.currentTimeMillis() - starting_time;
         System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
         System.out.println("!-----------------------------------------------");
@@ -145,15 +153,15 @@ public class  Main {
         //----------------------------------------------------------------
 
         //5. Ερώτημα πλησιέστερων γειτόνων χωρίς την χρήση καταλόγου
-        int k = 5;
+        int k = 10;
         System.out.println("\n Ερώτημα πλησιέστερων γειτόνων χωρίς χρήση καταλόγου για k=" + k +" lat=" + lat + " lon=" + lon);
         starting_time = System.currentTimeMillis();
         KNNQuery knn_query1 = new KNNQuery();
         Location middle = new Location(-1,lat,lon);
         ArrayList<Location> knn_query = knn_query1.knn_without_index(locations , middle , k );
-        for (Location neighbor3 : knn_query){
-            System.out.println(neighbor3.toString());
-        }
+        //for (Location neighbor3 : knn_query){
+            //System.out.println(neighbor3.toString());
+        //}
         ending_time = System.currentTimeMillis() - starting_time;
         System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
         System.out.println("!-----------------------------------------------");
@@ -170,9 +178,9 @@ public class  Main {
         KNNQuery knn_query2 = new KNNQuery();
         ArrayList<Location> knn_query_index = knn_query2.knn_with_index(new_point, k,tree);
         //ArrayList<Location> knn_query_index = tree.knn_with_index(new_point, k);
-        for (Location neighbor4 : knn_query_index){
-            System.out.println(neighbor4.toString());
-        }
+       // for (Location neighbor4 : knn_query_index){
+         //   System.out.println(neighbor4.toString());
+        //}
         ending_time = System.currentTimeMillis() - starting_time;
         System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
         System.out.println("!-----------------------------------------------");
@@ -187,7 +195,7 @@ public class  Main {
         System.out.println("\nMαζική κατασκευή του δένδρου bottom-up");
         starting_time = System.currentTimeMillis();
         BottomUp b = new BottomUp();
-        b.build();
+        b.mass_build();
         ending_time = System.currentTimeMillis() - starting_time;
         System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
         System.out.println("!-----------------------------------------------");

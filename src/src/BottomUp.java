@@ -35,61 +35,72 @@ public class BottomUp {
      * τις βάζει σε κουτάκια
      * @throws Exception
      */
-    public void build() throws Exception {
+    public void mass_build() throws Exception {
         //διαβάζουμε τον χάρτη
         load();
-        //γίνεται ταξινόμηση των σημείων ως προς x
+        //γίνεται ταξινόμηση των σημείων ως προς lat
         Collections.sort(points, Comparator.comparing(Point::getLat));
-        //λίστα που προσθέτουμε τα μπλοκ
-        ArrayList<Point> block = new ArrayList<>();
-        //χτίζουμε το δέντρο
-        ArrayList <NodeOfTree> rsn = new ArrayList<>();
-        //μεταβλητές για να κρατήσουμε την πάνω και την κάτω γωνία για το ορθογώνιο
-        double x1,x2,y1,y2;
+
+        ArrayList<Point> blocks = new ArrayList<>(); //λίστα που προσθέτουμε τα μπλοκ
+
+        ArrayList <NodeOfTree> temp_nodes = new ArrayList<>(); //λίστα που κρατάμε τους κόμβους
+
+        double x1,x2,y1,y2; //χαρακτηριστικά ορθογωνίου
         for (int i = 0; i< points.size(); i++)
         {
-            //προσθέτουμε σημεία στο μπλοκ μέχρι να φράσουμε τα 5
-            block.add(points.get(i));
+            //προσθέτουμε σημεία στο μπλοκ μέχρι να φτάσουμε τα 5 , αφού έχουμε 5 θέσεις το μέγιστο σε κάθε κόμβο
+            blocks.add(points.get(i));
+
             //αν το πλήθος των σημείων φτάσει τα 5 τότε
-            //σταματάει και πηγαίνει και βρίσκει την πάνω δεξιά και κάτω αριστερή γωνία
             if(i % max == 0) {
-                //μικρότερο σημείο στον άξονα x (το παίρνουμε από το σημείο που μπήκε πρώτο στη λίστα)
-                x1 = block.get(0).getLat();
-                //μεγαλύτερο σημείο στον άξονα x (το παίρνουμε από το σημείο που μπήκε τελευταίο στη λίστα)
-                x2 = block.get(block.size()-1).getLat();
-                //πρέπει να βρούμε το min max
-                y1 = block.stream().min(Comparator.comparing(Point::getLon)).get().getLon();
-                y2 = block.stream().max(Comparator.comparing(Point::getLon)).get().getLon();
-                //προσθήκη του κόμβου στο δέντρο
-                rsn.add(new NodeOfTree(x1,x2,y1,y2));
-                rsn.get(rsn.size()-1).add_children_nodes(block);
+
+                x1 = blocks.get(0).getLat();  //μικρότερο σημείο στον άξονα x -> το σημείο που μπήκε πρώτο στη λίστα
+
+                int blocks_size = blocks.size()-1;
+                x2 = blocks.get(blocks_size).getLat(); //μεγαλύτερο σημείο στον άξονα x -> το σημείο που μπήκε τελευταίο στη λίστα
+
+                //Υλογίζουμε το min και max στον άξονα y
+                y1 = blocks.stream().min(Comparator.comparing(Point::getLon)).get().getLon();
+                y2 = blocks.stream().max(Comparator.comparing(Point::getLon)).get().getLon();
+
+
+                //προσθήκη του κόμβου
+                temp_nodes.add(new NodeOfTree(x1,x2,y1,y2));
+                int nodes_size = temp_nodes.size() -1 ;
+                temp_nodes.get(nodes_size).add_children_nodes(blocks);
+
                 //αδειάζει το μπλοκ για να μπουν τα επόμενα 5 σημεία
-                block = new ArrayList<>();
+                blocks = new ArrayList<>();
+                //και επαναλαμβάνεται η διαδικασία μέχρις ότου μπουν όλα τα σημεία στους κόμβους-φύλλα
             }
         }
+
         //κρατάει το μέγεθος του αντιγράφου
         //σταματάει μόλις γεμίσει το συγκεκριμένο επίπεδο στο οποίο βρισκόμασταν
-        int count = rsn.size();
-        ArrayList<NodeOfTree> temp = new ArrayList<>(rsn);
-        //υπολογίζεται το ταβάνι της διαίρεσης μεταξύ του μεγέθους του δέντρου
-        //και του upper_limit
-        count = (int)Math.ceil((double)count/ max);
-        //χτίσιμο συγκεκριμένου επιπέδου
+        int count = temp_nodes.size();
+        ArrayList<NodeOfTree> temp = new ArrayList<>(temp_nodes);
+
+        count = (int)Math.ceil((double)count/ max); //υπολογίζουμε πόσους κόμβους θα έχουμε με βάση το ταβάνι max=5 που είναι τα points που χωράνε σε έναν κόμβο
+
         for (int i = 0; i < count; i++) {
-            //σε περίπτωση που υπάρχουν λιγότερο από 5 στοιχεία στο μπλοκ θα τρέχει
-            int test = Math.min(temp.size(),5);
-            double y = Double.MAX_VALUE,yy = Double.MIN_VALUE;
+
+            int test = Math.min(temp.size(),5); //πόσα στοιχεία βρίσκονται στον κόμβο ;
+            double y = Double.MAX_VALUE;
+            double _y = Double.MIN_VALUE;
             //υπολογίζω μεγαλύτερο και μικρότερο y
             for (int j = 0; j <test; j++) {
+                /*
                 if(temp.get(j).getRectangle().getY1() < y)
                     y = temp.get(j).getRectangle().getY1();
-                if(temp.get(j).getRectangle().getY2()> yy)
-                    yy = temp.get(j).getRectangle().getY2();
+                if(temp.get(j).getRectangle().getY2()> _y)
+                    _y = temp.get(j).getRectangle().getY2();*/
+                calculate_min_max_y(j,y,_y,temp);
             }
             //προσθέτω τα τετράγωνα στο δέντρο
-            rsn.add(new NodeOfTree(temp.get(0).getRectangle().getX1(),temp.get(Math.min(temp.size()-1,4)).getRectangle().getX2(),y,yy));
+            temp_nodes.add(new NodeOfTree(temp.get(0).getRectangle().getX1(),temp.get(Math.min(temp.size()-1,4)).getRectangle().getX2(),y,_y));
+
             for (int j = 0; j <test; j++) {
-                rsn.get(rsn.size()-1).add_new_child_node(temp.get(j));
+                temp_nodes.get(temp_nodes.size()-1).add_new_child_node(temp.get(j));
             }
             //άδειασμα στοιχείων
             for (int j = 0; j <test; j++) {
@@ -97,48 +108,68 @@ public class BottomUp {
             }
 
         }
-        //χτίσιμο ολόκληρου δέντρου
-        while (count > 1) // mexri na ktisti olo
+
+
+        while (count > 1) // όσο υπάρχει διαθέσιμος κόμβος -> χτίσε το δένδρο
         {
             temp = new ArrayList<>();
             int test = Math.min(count, 5);
             count = (int)Math.ceil((double)count/ max);
+
             for (int i = 0; i < count; i++) {
 
                 temp = new ArrayList<>();
                 for (int k = 0; k <test ; k++) {
-                    temp.add(rsn.get(rsn.size() -1 -k));
+                    temp.add(temp_nodes.get(temp_nodes.size() -1 -k));
                 }
-                //υπολογισμός μεγαλύτερου και μικρότερου y
-                double y = Double.MAX_VALUE, yy = Double.MIN_VALUE;
+                //υπολογισμός μεγαλύτερο και μικρότερο y
+                double y = Double.MAX_VALUE;
+                double _y = Double.MIN_VALUE;
                 for (int j = 0; j < temp.size(); j++) {
-                    if (temp.get(j).getRectangle().getY1() < y)
+                    /*if (temp.get(j).getRectangle().getY1() < y)
                         y = temp.get(j).getRectangle().getY1();
-                    if (temp.get(j).getRectangle().getY2() > yy)
-                        yy = temp.get(j).getRectangle().getY2();
+                    if (temp.get(j).getRectangle().getY2() > _y)
+                        _y = temp.get(j).getRectangle().getY2();*/
+                    calculate_min_max_y(j,y,_y,temp);
                 }
                 //προσθήκη στο δέντρο
-                rsn.add(new NodeOfTree(temp.get(0).getRectangle().getX1(), temp.get(temp.size() - 1).getRectangle().getX2(), y, yy));
+                temp_nodes.add(new NodeOfTree(temp.get(0).getRectangle().getX1(), temp.get(temp.size() - 1).getRectangle().getX2(), y, _y));
 
                 for (int j = 0; j < temp.size(); j++)
-                    rsn.get(rsn.size() - 1).add_new_child_node(temp.get(j));
+                    temp_nodes.get(temp_nodes.size() - 1).add_new_child_node(temp.get(j));
 
             }
 
         }
+
         //υπολογισμός μεγαλύτερου και μικρότερου y
-        double y = Double.MAX_VALUE,yy = Double.MIN_VALUE;
+        double y = Double.MAX_VALUE;
+        double _y = Double.MIN_VALUE;
         for (NodeOfTree rstarNode : temp) {
             if (rstarNode.getRectangle().getY1() < y)
                 y = rstarNode.getRectangle().getY1();
-            if (rstarNode.getRectangle().getY2() > yy)
-                yy = rstarNode.getRectangle().getY2();
+            if (rstarNode.getRectangle().getY2() > _y)
+                _y = rstarNode.getRectangle().getY2();
         }
         //προσθήκη στη ρίζα
-        NodeOfTree root =new NodeOfTree(temp.get(0).getRectangle().getX1(),temp.get(temp.size()-1).getRectangle().getX2(),y,yy);
+        NodeOfTree root =new NodeOfTree(temp.get(0).getRectangle().getX1(),temp.get(temp.size()-1).getRectangle().getX2(),y,_y);
         for (int i = 0; i < temp.size(); i++) {
             root.add_new_child_node(temp.get(i));
         }
+    }
+
+    /**
+     * Υπολογισμός μικρότερου και μεγαλύτερου y
+     * @param j
+     * @param y
+     * @param _y
+     * @param temp
+     */
+    private void calculate_min_max_y ( int j , double y , double _y , ArrayList<NodeOfTree> temp){
+            if (temp.get(j).getRectangle().getY1() < y)
+                y = temp.get(j).getRectangle().getY1();
+            if (temp.get(j).getRectangle().getY2() > _y)
+                _y = temp.get(j).getRectangle().getY2();
     }
 
     /**

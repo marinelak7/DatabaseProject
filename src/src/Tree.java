@@ -25,6 +25,7 @@ public class Tree {
     //αριθμός εισαγωγών
     private int total_records;
 
+
     /**
      * Κατασκευαστής του δέντρου
      * @param root η ρίζα του δέντρου
@@ -406,6 +407,7 @@ public class Tree {
      * @param new_point σημείο που πρέπει να προσθέσουμε στο δέντρο
      */
     public void add_in_tree(Point new_point) {
+        total_records ++;
         node_path = new ArrayList<>();
         NodeOfTree node = ChooseSubtree(root, new_point);
         //αν το πλήθος των σημειων του κόμβου είναι μικρότερο από τον μέγιστο αριθμό παιδιών που μπορεί να έχει ένας κόμβος
