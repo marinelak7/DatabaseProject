@@ -9,13 +9,6 @@ public class RangeQuery {
 
 
 
-    /**
-     * Ερωτήματα περιοχής χωρίς χρήση καταλόγου
-     * @param center
-     * @param radius
-     * @param locations
-     * @return λίστα με locations
-     */
     /*
     public static ArrayList<Location> range_query_without_index(Location middle, double radius, ArrayList<Location> locations) {
         //ArrayList για τις τοποθεσίες που βρίσκονται οι γείτονες εντός της ακτίνας
@@ -30,7 +23,7 @@ public class RangeQuery {
         return locations_in_range;
     }*/
     /**
-     * Ερωτήματα περιοχής με σειριακή αναζήτηση
+     * Ερωτήματα περιοχής με σειριακή αναζήτηση χωρίς χρήση καταλόγου
      * @param center
      * @param radius
      * @param locations
@@ -55,7 +48,6 @@ public class RangeQuery {
      * @param location
      * @param center
      * @param radius
-     * @return
      */
     private static boolean isWithinRadius(Location location, Location center, double radius) {
 
@@ -69,7 +61,6 @@ public class RangeQuery {
      * @param middle
      * @param radius
      * @param tree
-     * @return
      */
     public ArrayList<Location> range_query_with_index(Point middle, double radius , Tree tree) {
         ArrayList<Location> rangeResults = new ArrayList<>();

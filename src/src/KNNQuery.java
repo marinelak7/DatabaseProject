@@ -44,7 +44,7 @@ public class KNNQuery {
         return neighbors; //επέστρεψε τους knn κοντινότερους γείτονες
 
     }
-
+/*
    public ArrayList<Location> knn_with_index(Point middle, int k , Tree tree) {
         //Arraylist για τα σημεία που θα προκύψουν από το maxHeap
         ArrayList<Point> knn_points = new ArrayList<>();
@@ -97,9 +97,73 @@ public class KNNQuery {
         }
         return knn_results;
     }
+*/
+
+    /**
+     * Υλοποίηση ερωτήματος κοντινότερων γειτόνων με χρήση καταλόγου
+     * @param middle σημείο
+     * @param k ο αριθμός επιθυμητών γειτόνων
+     * @param tree
+     *  @return την λίστα με τους knn γείτονες
+     */
+    public ArrayList<Location> knn_with_index(Point middle, int k, Tree tree) {
+
+        ArrayList<Point> points_knn = new ArrayList<>();
+        Data data = new Data();
+        MinHeap minheap = new MinHeap(100);
+        MaxHeap maxheap = new MaxHeap(k);
+
+        //Για καθε παιδι της ριζας
+        for (NodeOfTree node : tree.getRoot().getChildren()) {
+            //βαζουμε στην minheap τα παιδια της ριζας
+            double distance = node.getRectangle().find_distance_between_point_and_Rectangle(middle);
+            node.setDistance_from_point(distance);
+            minheap.insert_to_minHeap(node);
+        }
+
+        while (!minheap.MINHeap_Empty()) { //οσο η minheap δεν ειναι αδεια
+            NodeOfTree popped = minheap.remove_from_heap(); //βγαινει το στοιχειο που ειναι πιο πανω στη σωρο
+            for (NodeOfTree children : popped.getChildren()) { //καθε παιδί του κόμβου που βγήκε
+                children.setDistance_from_point(children.getRectangle().find_distance_between_point_and_Rectangle(middle)); //του οποιου το ορθογωνιο ειναι πιο κοντα στο middle
+                if (!children.isLeaf()) { //εαν το παιδί του κομβου που βγηκε δεν ειναι φυλλο
+                    if (maxheap.getCount() < k) { //εαν δεν εχει γεμισει το maxheap
+                        minheap.insert_to_minHeap(children); //βαζουμε το παιδι στο minheap
+                    }
+                } else if (!children.isLeaf() && maxheap.getMax().getDistance_point() >= children.getDistance_from_point()) { //εαν το παιδι του κομβου που βγηκε δεν ειναι φυλλο
+                    //και εχουμε k γειτονες , τοτε πρεπει να κρατησουμε τους κοντινοτερους
+                    minheap.insert_to_minHeap(children);
+                } else { //αν το παιδι ειναι φυλλο
+                    //προσθεσε τα σημεια του στο maxheap
+                    ArrayList<Point> max_heap_points = children.getPoints();
+                    for (Point point : max_heap_points) {
+                        point.setDistance_point(point.find_distance_from_point(middle));
+                        maxheap.insert_to_maxHeap(point);
+                    }
+
+                }
 
 
+            }
 
 
+        }
+
+        for (int i=0; i<k ; i++ ){ //βαζουμε στη λιστα με knn points τα σημεια που εχουν γινει εξτρακτ απτο maxheap
+            points_knn.add(maxheap.popMax()) ;
+        }
+        ArrayList<Location> knn_query_results = new ArrayList<>() ; //τοποθεσιες των σημειων των knn points
+        for (int i=0; i<points_knn.size(); i++){
+            Location n = data.find_block(points_knn.get(i).getBlockid() , points_knn.get(i).getSlotid() );
+            n.setDistance(points_knn.get(i).getDistance_point());
+            knn_query_results.add(n);
+        }
+        return knn_query_results;
+
+    }
 
 }
+
+
+
+
+
