@@ -48,24 +48,14 @@ public class Insertion {
                     count = 0;
                     blocks_Number++;
                     //εμφάνιση μπλοκ id
-                    //dos.writeChar('b');
+                    dos.writeChar('b');
                     if (blocks_Number < 10) {
-                        //dos.writeChar('0');
-                        //dos.writeChar('0');
-                        //dos.writeChar((char) blocks_Number);
+
                         dos.writeChars(String.format("b%03d", blocks_Number));
                     } else {
-                        //String bns = String.valueOf(blocks_Number);
-                        //char[] tmp = bns.toCharArray();
                         if (blocks_Number < 99) {
-                            //dos.writeChar('0');
-                            //dos.writeChar((char) tmp[0]);
-                            //dos.writeChar((char) tmp[1]);
                             dos.writeChars(String.format("b%03d", blocks_Number));
                         } else {
-                            //dos.writeChar((char) tmp[0]);
-                            //dos.writeChar((char) tmp[1]);
-                            //dos.writeChar((char) tmp[2]);
                             dos.writeChars(String.format("b%03d", blocks_Number));
                         }
                     }

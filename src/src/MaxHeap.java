@@ -110,22 +110,6 @@ public class MaxHeap {
         }
     }
 
-    /*
-    private void implementation(int node) {
-        if (isLeaf(node))
-            return;
-        if (Heap[node].getDistance_point() < Heap[find_left_child(node)].getDistance_point() ||
-                Heap[node].getDistance_point() < Heap[find_right_child(node)].getDistance_point()) {
-
-            if (Heap[find_left_child(node)].getDistance_point() > Heap[find_right_child(node)].getDistance_point()) {
-                swap(node, find_left_child(node));
-                implementation(find_left_child(node));
-            } else {
-                swap(node, find_right_child(node));
-                implementation(find_right_child(node));
-            }
-        }
-    }*/
 
     /**
      * Μέθοδος που προσθέτει ένα καινούργιο στοιχείο στη σωρό
@@ -155,25 +139,5 @@ public class MaxHeap {
 
 
     }
-
-    /*
-    public void insert_to_maxHeap(Point new_point) { //insert
-        //αν το καινούργιο σημείο είναι πιο κοντά από ότι είναι το πιο μακρινό σημείο
-        //και η στοίβα είναι γεμάτη τότε πρέπει να βγάλουμε ένα σημείο να προσθέσουμε
-        //το καινούργιο
-        if (count== maximum_capacity){
-            if(new_point.getDistance_point()<=getMax().getDistance_point())
-                popMax();
-            else
-                return ;
-        }
-        Heap[++count] = new_point;
-        //αναπροσαρμογή και διόρθωση της σειράς των στοιχείων στη σωρό
-        int current = count;
-        while (Heap[current].getDistance_point() > Heap[parent(current)].getDistance_point() ) {
-            swap(current, parent(current));
-            current = parent(current);
-        }
-    }*/
 
 }

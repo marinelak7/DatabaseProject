@@ -145,31 +145,6 @@ public class Rectangle implements Serializable {
 
         }
 
-        /*if(x1<=x && x<=x2 && y>y2)
-            y2=y;
-        else if(y1<=y && y<=y2 && x<x1)
-            x1=x;
-        else if(x1<=x && x<=x2 && y<y1)
-            y1=y;
-        else if(y1<=y && y<=y2 && x>x2)
-            x2=x;
-        else if(x<x1 && y>y2){
-            x1=x;
-            y2=y;
-        }else if(x>x2 && y<y1){
-            x2=x;
-            y1=y;
-        }else if(x>x2 && y>y2){
-            x2=x;
-            y2=y;
-        } else if(x<x1 && y<y1){
-            x1=x;
-            y1=y;
-        }
-        else if(x<=x2 && x>=x1 && y>=y1 && y<=y2){
-        }
-        else System.out.println("Error in setting dimensions");*/
-
         if (x < x1) {
             x1 = x;
         } else if (x > x2) {
@@ -203,19 +178,6 @@ public class Rectangle implements Serializable {
             y2=y_upper;
             return;
         }
-
-        /*if(x_lower<x1){
-            x1=x_lower;
-        }
-        if(x_upper>x2){
-            x2=x_upper;
-        }
-        if(y_lower<y1){
-            y1=y_lower;
-        }
-        if(y_upper>y2){
-            y2=y_upper;
-        }*/
 
         x1 = Math.min(x1, x_lower);
         x2 = Math.max(x2, x_upper);
@@ -258,21 +220,6 @@ public class Rectangle implements Serializable {
         return 0;
     }
 
-    /*public double calculate_overlap(Rectangle second_rectangle){
-        double xx1=second_rectangle.getX1();
-        double xx2=second_rectangle.getX2();
-        double yy1=second_rectangle.getY1();
-        double yy2=second_rectangle.getY2();
-        double overlap_x=Math.max(0,Math.min(x2,xx2)-Math.max(x1,xx1));
-        double overlap_y=Math.max(0,Math.min(y2,yy2)-Math.max(y1,yy1));
-        if(overlap_x==0){
-            return overlap_y;
-        }
-        if(overlap_y==0){
-            return overlap_x;
-        }
-        return overlap_x*overlap_y;
-    }*/
 
     /**
      * Μέθοδος που υπολογίζει την επικάλυψη που υπάρχει μεταξύ δύο ορθογωνίων

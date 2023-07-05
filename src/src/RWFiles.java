@@ -80,25 +80,14 @@ public class RWFiles {
                     dos.writeChar('b');
                     //όταν αλλάζουμε μπλοκ, εμφανίζεται το id του καινούργιου μπλοκ στην αρχή
                     if (blocks_Number < 10) {
-                        /*
-                        dos.writeChar('0');
-                        dos.writeChar('0');
-                        dos.writeChar((char) blocks_Number);*/
                         dos.writeChars(String.format("b%03d", blocks_Number)); // Block ID
                     } else {
-                        //String bns = String.valueOf(blocks_Number);
-                        //char[] tmp = bns.toCharArray();
+
                         if (blocks_Number < 99) {
-                            /*
-                            dos.writeChar('0');
-                            dos.writeChar(tmp[0]);
-                            dos.writeChar((char) tmp[1]);*/
+
                             dos.writeChars(String.format("b%03d", blocks_Number)); // Block ID
                         } else {
-                            /*
-                            dos.writeChar((char) tmp[0]);
-                            dos.writeChar((char) tmp[1]);
-                            dos.writeChar((char) tmp[2]);*/
+
                         }
                     }
 
@@ -155,74 +144,4 @@ public class RWFiles {
         }
     }
 
-
-
-    /*public void add_location(Location location, ArrayList<Location> locations) {
-        //προσθέτουμε την τοποθεσία στη λίστα με τις υπόλοιπες τοποθεσίες
-        //επαναλαμβάνουμε την ίδια διαδικασία με πριν
-        locations.add(location);
-        int size = locations.size();
-        try {
-            FileOutputStream fos = new FileOutputStream("datafile.txt");
-            DataOutputStream dos = new DataOutputStream(fos);
-            //τα πρώτα 4 ψηφία αντιπροσωπεύουν το blockid
-            dos.writeChar('b');
-            dos.writeChar('0');
-            dos.writeChar('0');
-            dos.writeChar('0');
-            //Κάθε εισαγωγή περιλαμβάνει 24 bytes
-            //άρα για να δημιουργήσουμε μπλοκς με χωρητικότητα 32ΚΒ πρέπει να έχουμε 1365 εισαγωγές
-            //επιπλέον τα 8 πρώτα bytes του κάθε μπλοκ αντιπροσωπεύουν το blockid
-            dos.writeInt(size/1365+1);
-            dos.writeInt(size);
-            dos.writeInt(1365);
-            int blocks_Number = 1;
-            //εμφάνιση μπλοκ id
-            dos.writeChar('b');
-            dos.writeChar('0');
-            dos.writeChar('0');
-            dos.writeChar((char) blocks_Number);
-            int count = 0;
-            for (int x = 0; x < locations.size(); x++) {
-                if (count == 1365) {
-                    //ο αριθμός εισαγωγών σε κάθε μπλοκ είναι 1365
-                    //αρα το μέγεθος του κάθε μπλοκ είναι 32ΚΒ
-                    count = 0;
-                    blocks_Number++;
-                    //εμφάνιση μπλοκ id
-                    dos.writeChar('b');
-                    if (blocks_Number < 10) {
-                        dos.writeChar('0');
-                        dos.writeChar('0');
-                        dos.writeChar((char) blocks_Number);
-                    } else {
-                        String bns = String.valueOf(blocks_Number);
-                        char[] tmp = bns.toCharArray();
-                        if (blocks_Number < 99) {
-                            dos.writeChar('0');
-                            dos.writeChar((char) tmp[0]);
-                            dos.writeChar((char) tmp[1]);
-                        } else {
-                            dos.writeChar((char) tmp[0]);
-                            dos.writeChar((char) tmp[1]);
-                            dos.writeChar((char) tmp[2]);
-                        }
-                    }
-
-                }
-                //γράφουμε τα αποτελέσματα στο datafile
-                dos.writeLong(locations.get(x).getLocationid());
-                dos.writeDouble(locations.get(x).getLat());
-                dos.writeDouble(locations.get(x).getLon());
-                count++;
-            }
-            dos.close();
-        } catch (
-                IOException e) {
-            System.out.println("IOException : " + e);
-
-
-        }
-
-    }*/
 }

@@ -78,34 +78,6 @@ public class Tree {
 
 
 
-    /*
-    public void write_in_index_file() {
-
-        try {
-            FileOutputStream myWriter = new FileOutputStream("indexfile.txt");
-            ObjectOutputStream objectOut = new ObjectOutputStream(myWriter);
-            objectOut.writeObject(root);
-            objectOut.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred while writing in file");
-            e.printStackTrace();
-        }
-    }*/
-
-
-    /*
-    public void read_from_index_file() {
-        try {
-            FileInputStream myWriter = new FileInputStream("indexfile.txt");
-            ObjectInputStream objectOut = new ObjectInputStream(myWriter);
-            root = (NodeOfTree) objectOut.readObject();
-            objectOut.close();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }*/
-
     /**
      * Συνάρτηση που υλοποιεί τον αλγόριθμο ChooseSubtree
      * @param node ένας κόμβος
@@ -123,14 +95,6 @@ public class Tree {
             NodeOfTree selectedChild = null;
             double minimumExtend = Double.MAX_VALUE;
             //υπολογισμός του πόσο θα αλλάξει το ορθογώνιο του κάθε παιδιού του node μετά την εισαγωγή του νέου στοιχείου
-            /*for (int i = 0; i < currentNode.getChildren().size(); i++) {
-                double area = currentNode.getChildren().get(i).getRectangle().set_new_area(new_point.getLat(), new_point.getLon()) - Node.getChildren().get(i).getRectangle().getArea();
-                if (area < minimumExtend) {
-                    minimumExtend = area;
-                    child = currentNode.getChildren().get(i);
-
-                }
-            }*/
 
             for (NodeOfTree child : currentNode.getChildren()) {
                 double area = child.getRectangle().set_new_area(new_point.getLat(), new_point.getLon()) - child.getRectangle().getArea();
@@ -422,9 +386,6 @@ public class Tree {
             node.add_new_point(new_point);
             updatePathDimensions(new_point);
 
-            /*for (int i = 0; i < node_path.size(); i++) {
-                node_path.get(i).getRectangle().set_New_Dimensions(new_point.getLat(), new_point.getLon());
-            }*/
         }
         //αλλιώς αν το πλήθος των παιδιών ξεπερνάει τον μέγιστο αριθμό παιδιών που μπορεί να έχει ένας κόμβος
         //πρέπει να κάνουμε split
@@ -438,9 +399,7 @@ public class Tree {
                 newRoot.add_new_child_node(splitted_node.get(1));
                 root = newRoot;
                 updatePathDimensions(new_point);
-                /*for (int i = 0; i < node_path.size(); i++) { //ανανεωνει το path
-                    node_path.get(i).getRectangle().set_New_Dimensions(new_point.getLat(), new_point.getLon());
-                }*/
+
             }
             //κάνουμε split μεγαλύτερο μέρος του δέντρου
             else { //εαν δεν εχουμε μονο την ριζα
@@ -491,9 +450,7 @@ public class Tree {
                         }
                     }
                     updatePathDimensions(new_point);
-                    /*for (int i = 0; i < node_path.size(); i++) {
-                        node_path.get(i).getRectangle().set_New_Dimensions(new_point.getLat(), new_point.getLon());
-                    }*/
+
                 }
             }
         }
@@ -511,307 +468,6 @@ public class Tree {
         }
     }
 
-
-
-
-   /* /**
-     * Συνάρτηση που υλοποιεί τα ερωτήματα περιοχής με τη βοήθεια του indexfile
-     * Επιστρέφει τους γείτονες που βρίσκονται μέσα στον "κύκλο" γύρω από το στοιχείο middle
-     * Χρησιμοποιεί μια στοίβα (για τον αλγόριθμο DFS) όπου σπρώχνουμε έναν κόμβο εάν είναι μια πιθανή επιλογή να κρατήσουμε γείτονες
-     * και μια ArrayList από Points όπου βάζουμε τους γείτονες
-     * @param middle σημείο από το οποίο ψάχνουμε τους γείτονες
-     * @param radius η ακτίνα μέσα στην οποία ψάχνουμε τα σημεία
-     */
-    /*
-    public ArrayList<Location> range_query_with_index(Point middle, double radius) {
-        //ArrayList τις τοποθεσίες που βρίσκονται μέσα στο radius
-        ArrayList<Location> range_results=new ArrayList<>();
-        //ArrayList με τα στοιχεία που βρίσκονται μέσα στο radius
-        ArrayList<Point> points = new ArrayList<>();
-        //διαβάζει από το datafile
-        LoadData data=new LoadData();
-        //αν η απόσταση της ρίζα από το σημείο middle είναι μικρότερο από την τιμή της ακτίνας
-        //τότε βάζουμε τη ρίζα στη στοίβα
-        if (root.getRectangle().find_distance_between_point_and_Rectangle(middle) <= radius) {
-            Stack<NodeOfTree> dfs_stack = new Stack<>();
-            dfs_stack.push(root);
-            //όσο η στοίβα δεν είναι άδεια
-            while (!dfs_stack.empty()) {
-                //κάνουμε pop τον πρώτο κόμβο της στοίβας
-                NodeOfTree node = dfs_stack.pop();
-                for (int i = 0; i < node.getChildren().size(); i++) {
-                    //αν ο κόμβος που βγήκε από τη στοίβα είναι φύλλο τότε
-                    //ελέγχουμε αν τα σημεία που ανήκουν μέσα στον κόμβο βρίσκονται εντός της ακτίνας radius
-                    //αν ισχύει αυτό τότε προσθέτουμε τα σημεία αυτά στο points
-                    if (node.getChildren().get(i).isLeaf()) {
-                        for (int k = 0; k < node.getChildren().get(i).getPoints().size(); k++) {
-                            if (node.getChildren().get(i).getPoints().get(k).find_distance_from_point(middle) <= radius) {
-                                points.add(node.getChildren().get(i).getPoints().get(k));
-                            }
-                        }
-                    }
-                    //αν ο κόμβος που βγήκε από τη στοίβα δεν είναι φύλλο τότε
-                    //ελέγχουμε αν τα Rectangle των παιδιών του είναι εντός της ακτίνας radius
-                    //αν ισχύει η συνθήκη τότε βάζουμε τα παιδιά του κόμβου στη στοίβα
-                    else {
-                        if (node.getChildren().get(i).getRectangle().find_distance_between_point_and_Rectangle(middle) <= radius) {
-                            dfs_stack.push(node.getChildren().get(i));
-                        }
-                    }
-                }
-            }
-        }
-        //αποθηκεύουμε τα δεκτά σημεία στη range_results
-        for(int i=0;i<points.size();i++){
-            Location loc = (data.find_block(points.get(i).getBlockid(),points.get(i).getSlotid()));
-            loc.find_manhattan_distance_between_two_points(middle.getLat(),middle.getLon());
-            range_results.add(loc);
-        }
-        return range_results;
-    }*/
-
-
-
-/*    public ArrayList<Location> knn_with_index(Point middle, int k) {
-        //Arraylist για τα σημεία που θα προκύψουν από το maxHeap
-        ArrayList<Point> knn_points = new ArrayList<>();
-        //διαβάζει τα δεδομένα από το datafile
-        Data data=new Data();
-        MinHeap minHeap = new MinHeap(100);
-        MaxHeap maxHeap = new MaxHeap(k);
-        //βάζουμε στη minheap τα παιδιά της ρίζας
-        for (NodeOfTree node : root.getChildren()) {
-            node.setDistance_from_point(node.getRectangle().find_distance_between_point_and_Rectangle(middle));
-            minHeap.insert_to_minHeap(node);
-        }
-
-        //όσο η minheap δεν είναι άδεια
-        while (!minHeap.MINHeap_Empty()) {
-            //βγαίνει το στοιχείο που βρίσκεται πιο πάνω στη σωρό
-            NodeOfTree pop = minHeap.remove_from_heap();
-            //ψάξε το παιδί του κόμβου που βγήκε του οποίου το rectangle είναι πιο κοντά στο σημείο middle
-            for (NodeOfTree child : pop.getChildren()) {
-                child.setDistance_from_point(child.getRectangle().find_distance_between_point_and_Rectangle(middle));
-                //αν το παιδί δεν είναι φύλλο και έχουμε λιγότερους από k γείτονες τότε βάζουμε τον κόμβο στο minHeap
-                if (!child.isLeaf() && (maxHeap.getCount() < k))
-                    minHeap.insert_to_minHeap(child);
-                    //αν το παιδί δεν είναι φύλλο και έχουμε k γείτονες τότε
-                    // πρέπει να κρατήσουμε του κοντινότερους και αν χρειαστεί να αλλάξουμε το maxHeap (του γείτονες δηλαδή)
-                else if (!child.isLeaf()) {
-                    if (maxHeap.getMax().getDistance_point() >= child.getDistance_from_point())
-                        minHeap.insert_to_minHeap(child);
-                }
-                //αν το παιδί είναι φύλλο τότε πρόσθεσε τα σημεία του στο maxHeap
-                else {
-                    ArrayList<Point> points = child.getPoints();
-                    for (Point point : points) {
-                        point.setDistance_point(point.find_distance_from_point(middle));
-                        maxHeap.insert_to_maxHeap(point);
-                    }
-                }
-            }
-        }
-        //βάζουμε στο knn_points τα σημεία που έχουν προκύψει από το maxHeap
-        for (int i = 0; i < k; i++) {
-            knn_points.add(maxHeap.popMax());
-        }
-        //δημιουργία ArrayList για τις τοποθεσίες των σημείων από το knn_points
-        ArrayList<Location> knn_results=new ArrayList<>();
-        for(int i=0;i<knn_points.size();i++){
-            Location neighbor=data.find_block(knn_points.get(i).getBlockid(),knn_points.get(i).getSlotid());
-            neighbor.setDistance(knn_points.get(i).getDistance_point());
-            knn_results.add(neighbor);
-        }
-        return knn_results;
-    }
-
-*/
-
-
-
-    /*public void delete_from_tree(long id, ArrayList<Location> locations)
-    {
-        //κόμβος parent ο οποιος ειναι κενος
-        NodeOfTree parent = null;
-        //λίστα με όλους τους κόμβους του δέντρου
-        ArrayList<NodeOfTree> temptree = new ArrayList<>();
-        temptree.add(getRoot()); //μεσα στη λιστα που εφτιαξα βαζω την ριζα
-        boolean flag = true;
-        while (flag){
-            for(NodeOfTree r : temptree) { //για καθε κομβο r που ειναι αποθηκευμενος στη λιστα temptree
-                if (AllLeaf(temptree) || temptree.isEmpty()) //αν ολα ειναι φυλλα ή το temptree είναι άδειο
-                {
-                    flag = false;
-                    break; //βγες απο την while
-                }
-                //ελέγχω αν ο κομβος r είναι φύλλο
-                if (r.isLeaf()) {
-                    //κρατάμε τον γονιό του κόμβου
-                    parent = new NodeOfTree(r.getRectangle().getX1(),r.getRectangle().getX2(),r.getRectangle().getY1(),r.getRectangle().getY2()); //αρχικοποιει τον κομβο
-                    Data data = new Data(); //φτιαχνει ενα data τυπου LoadData
-                    ArrayList<Point> point = new ArrayList<>(r.getPoints()); // φτιαχνει μια λιστα με σημεια του κομβου r
-                    //παίρνουμε όλα τα στοιχεία που είναι στον κόμβο
-                    // βρίσκουμε τις τοποθεσίες των σημείων του
-                    for (Point p : point) { //διασχιζει τα σημεια μεσα στον κομβο
-                        Location lc = data.find_block(p.getBlockid(), p.getSlotid());
-                        long check = lc.getLocationid(); //παιρνω το id της τοποθεσιας και το βαζω σε μια μεταβλητη
-                        //αν κάποιο από τα σημεία έχει ίδιο id με αυτό που δίνεται ως όρισμα τότε
-                        if (check == id) {
-
-                            flag = false;
-                            //δημιουργία προσωρινού δέντρου και αφαίρεση από τη λίστα το σημείο αυτό αφαιρώντας την τοποθεσία του
-                            ArrayList<Point> temp = parent.getPoints();
-                            ArrayList<Location> tempLoc = new ArrayList<>(locations);
-                            for (Location l : tempLoc) {
-                                if (l.getLocationid() == check) {
-                                    locations.remove(l);
-                                }
-                            }
-                            parent.setPoints(temp);  //clear και αρχικοποιηση
-                            //έλεγχος πληρότητας:
-                            //αν ο κόμβος είναι λιγότερο από το 50% γεμάτος με σημεία τότε
-                            // θα πρέπει να γίνει η αναδιαμόρφωση στο δέντρο
-                            if (parent.getPoints().size() <= 3) { //γιατι το max ειναι 5
-                                temp = parent.getPoints();
-                                parent.setPoints(new ArrayList<>());
-                                //διαγραφή των τοποθεσιών που έμειναν ορφανές
-                                for (Point t : temp) { //για καθε σημειο που βρισκεται μεσα στο temp
-                                    for (Location l : tempLoc) { //για καθε τοποθεσια που βρισκεται το tempLoc
-                                        if (l.getLocationid() == data.find_block(t.getBlockid(), t.getSlotid()).getLocationid())
-                                            locations.remove(l);
-                                    }
-                                    //εισαγωγή των ορφανών τοποθεσιών στο δέντρο
-                                    Insertion lOSM = new Insertion();
-                                    lOSM.add_location(data.find_block(t.getBlockid(), t.getSlotid()), data.Read_Data());
-                                }
-
-                            }
-                        }
-                    }
-
-                }
-                parent = r;
-            }
-            temptree.remove(parent);
-            temptree.addAll(parent.getChildren());
-
-        }
-    }*/
-
-    /*public void delete_from_tree(long id, ArrayList<Location> locations)
-    {
-        //κόμβος parent ο οποιος ειναι κενος
-        NodeOfTree parent = null;
-        //λίστα με όλους τους κόμβους του δέντρου
-        ArrayList<NodeOfTree> temptree = new ArrayList<>();
-        temptree.add(getRoot()); //μεσα στη λιστα που εφτιαξα βαζω την ριζα
-        boolean flag = true;
-        while (flag){
-            for(NodeOfTree r : temptree) { //για καθε κομβο r που ειναι αποθηκευμενος στη λιστα temptree
-                if (AllLeaf(temptree) || temptree.isEmpty()) //αν ολα ειναι φυλλα ή το temptree είναι άδειο
-                {
-                    flag = false;
-                    break; //βγες απο την while
-                }
-                //ελέγχω αν ο κομβος r είναι φύλλο
-                if (r.isLeaf()) {
-                    //κρατάμε τον γονιό του κόμβου
-                    parent = new NodeOfTree(r.getRectangle().getX1(),r.getRectangle().getX2(),r.getRectangle().getY1(),r.getRectangle().getY2()); //αρχικοποιει τον κομβο
-                    Data data = new Data(); //φτιαχνει ενα data τυπου LoadData
-                    ArrayList<Point> point = new ArrayList<>(r.getPoints()); // φτιαχνει μια λιστα με σημεια του κομβου r
-                    //παίρνουμε όλα τα στοιχεία που είναι στον κόμβο
-                    // βρίσκουμε τις τοποθεσίες των σημείων του
-                    for (Point p : point) { //διασχιζει τα σημεια μεσα στον κομβο
-                        Location lc = data.find_block(p.getBlockid(), p.getSlotid());
-                        long check = lc.getLocationid(); //παιρνω το id της τοποθεσιας και το βαζω σε μια μεταβλητη
-                        //αν κάποιο από τα σημεία έχει ίδιο id με αυτό που δίνεται ως όρισμα τότε
-                        if (check == id) {
-                            flag = false;
-                            //δημιουργία προσωρινού δέντρου και αφαίρεση από τη λίστα το σημείο αυτό αφαιρώντας την τοποθεσία του
-                            ArrayList<Point> temp = parent.getPoints();
-                            ArrayList<Location> tempLoc = new ArrayList<>(locations);
-                            for (Location l : tempLoc) {
-                                if (l.getLocationid() == check) {
-                                    locations.remove(l);
-                                }
-                            }
-                            parent.setPoints(temp);  //clear και αρχικοποιηση
-                            //έλεγχος πληρότητας:
-                            //αν ο κόμβος είναι λιγότερο από το 50% γεμάτος με σημεία τότε
-                            // θα πρέπει να γίνει η αναδιαμόρφωση στο δέντρο
-                            if (parent.getPoints().size() <= 3) { //γιατι το max ειναι 5
-                                temp = parent.getPoints();
-                                parent.setPoints(new ArrayList<>());
-                                //διαγραφή των τοποθεσιών που έμειναν ορφανές
-                                for (Point t : temp) { //για καθε σημειο που βρισκεται μεσα στο temp
-                                    for (Location l : tempLoc) { //για καθε τοποθεσια που βρισκεται το tempLoc
-                                        if (l.getLocationid() == data.find_block(t.getBlockid(), t.getSlotid()).getLocationid())
-                                            locations.remove(l);
-                                    }
-                                    //εισαγωγή των ορφανών τοποθεσιών στο δέντρο
-                                    RWFiles lOSM = new RWFiles();
-                                    lOSM.add_location(data.find_block(t.getBlockid(), t.getSlotid()), data.Read_Data());
-                                }
-
-                            }
-                        }
-                    }
-
-                }
-                parent = r;
-            }
-            temptree.remove(parent);
-            temptree.addAll(parent.getChildren());
-
-        }*/
-
-
-    /*public ArrayList<Location> range_query_with_index(Point middle, double radius) {
-        //ArrayList τις τοποθεσίες που βρίσκονται μέσα στο radius
-        ArrayList<Location> range_results=new ArrayList<>();
-        //ArrayList με τα στοιχεία που βρίσκονται μέσα στο radius
-        ArrayList<Point> points = new ArrayList<>();
-        //διαβάζει από το datafile
-        Data data=new Data();
-        //αν η απόσταση της ρίζα από το σημείο middle είναι μικρότερο από την τιμή της ακτίνας
-        //τότε βάζουμε τη ρίζα στη στοίβα
-        if (root.getRectangle().find_distance_between_point_and_Rectangle(middle) <= radius) {
-            Stack<NodeOfTree> dfs_stack = new Stack<>();
-            dfs_stack.push(root);
-            //όσο η στοίβα δεν είναι άδεια
-            while (!dfs_stack.empty()) {
-                //κάνουμε pop τον πρώτο κόμβο της στοίβας
-                NodeOfTree node = dfs_stack.pop();
-                for (int i = 0; i < node.getChildren().size(); i++) {
-                    //αν ο κόμβος που βγήκε από τη στοίβα είναι φύλλο τότε
-                    //ελέγχουμε αν τα σημεία που ανήκουν μέσα στον κόμβο βρίσκονται εντός της ακτίνας radius
-                    //αν ισχύει αυτό τότε προσθέτουμε τα σημεία αυτά στο points
-                    if (node.getChildren().get(i).isLeaf()) {
-                        for (int k = 0; k < node.getChildren().get(i).getPoints().size(); k++) {
-                            if (node.getChildren().get(i).getPoints().get(k).find_distance_from_point(middle) <= radius) {
-                                points.add(node.getChildren().get(i).getPoints().get(k));
-                            }
-                        }
-                    }
-                    //αν ο κόμβος που βγήκε από τη στοίβα δεν είναι φύλλο τότε
-                    //ελέγχουμε αν τα mbr των παιδιών του είναι εντός της ακτίνας radius
-                    //αν ισχύει η συνθήκη τότε βάζουμε τα παιδιά του κόμβου στη στοίβα
-                    else {
-                        if (node.getChildren().get(i).getRectangle().find_distance_between_point_and_Rectangle(middle) <= radius) {
-                            dfs_stack.push(node.getChildren().get(i));
-                        }
-                    }
-                }
-            }
-        }
-        //αποθηκεύουμε τα δεκτά σημεία στη range_results
-        for(int i=0;i<points.size();i++){
-            Location loc = (data.find_block(points.get(i).getBlockid(),points.get(i).getSlotid()));
-            loc.find_manhattan_distance_between_two_points(middle.getLat(),middle.getLon());
-            range_results.add(loc);
-        }
-        return range_results;
-    }*/
 
 }
 

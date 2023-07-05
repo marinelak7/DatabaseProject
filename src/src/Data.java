@@ -165,26 +165,6 @@ public class Data {
      * @param slotid το slot στο οποίο έχει αποθηκευτεί η πληροφορία που ψάχνουμε
      * */
     public Location find_block(int blockid, int slotid) {
-        /*RandomAccessFile accessFile = null;
-        try {
-            accessFile = new RandomAccessFile("datafile.txt", "rw");
-            accessFile.skipBytes(20); //μεταδεδομενα
-            accessFile.skipBytes(32768 * --blockid); //ολα τα blockid
-            accessFile.skipBytes(8); //blockid
-            accessFile.skipBytes(24 * slotid); //ολα τα slotid
-            //κρατάμε μόνο το id του location , lat , lon που μας χρειαζεται
-            long id = accessFile.readLong();
-            double lat = accessFile.readDouble();
-            double lon = accessFile.readDouble();
-            Location location = new Location(id, lat, lon); //οριζουμε ενα location
-            return location; //το επιστρέφουμε
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;*/
 
         RandomAccessFile file = null; //είναι μια κλάση της Java που παρέχει μεθόδους για ανάγνωση και εγγραφή σε ένα αρχείο με τυχαίο τρόπο
         Location location = null; //αρχικοποιώ ένα location κενό

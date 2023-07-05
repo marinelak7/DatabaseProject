@@ -89,11 +89,7 @@ public class BottomUp {
             double _y = Double.MIN_VALUE;
             //υπολογίζω μεγαλύτερο και μικρότερο y
             for (int j = 0; j <test; j++) {
-                /*
-                if(temp.get(j).getRectangle().getY1() < y)
-                    y = temp.get(j).getRectangle().getY1();
-                if(temp.get(j).getRectangle().getY2()> _y)
-                    _y = temp.get(j).getRectangle().getY2();*/
+
                 calculate_min_max_y(j,y,_y,temp);
             }
             //προσθέτω τα τετράγωνα στο δέντρο
@@ -126,10 +122,6 @@ public class BottomUp {
                 double y = Double.MAX_VALUE;
                 double _y = Double.MIN_VALUE;
                 for (int j = 0; j < temp.size(); j++) {
-                    /*if (temp.get(j).getRectangle().getY1() < y)
-                        y = temp.get(j).getRectangle().getY1();
-                    if (temp.get(j).getRectangle().getY2() > _y)
-                        _y = temp.get(j).getRectangle().getY2();*/
                     calculate_min_max_y(j,y,_y,temp);
                 }
                 //προσθήκη στο δέντρο

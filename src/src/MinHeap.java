@@ -111,26 +111,6 @@ public class MinHeap {
       }
   }
 
-    /*
-    private void implementation(int node) {
-        //αν ο κόμβος δεν είναι φύλλο και είναι μεγαλύτερο από οποιοδήποτε από τα παιδιά του
-        if (!isLeaf(node)) {
-            if (Heap[node].getDistance_from_point() > Heap[left_child(node)].getDistance_from_point()
-                    || Heap[node].getDistance_from_point() > Heap[right_child(node)].getDistance_from_point()) {
-                //αντάλλαξε το με το αριστερό παιδί και προσάρμοσε στη σωρό το αριστερό παιδί
-                if (Heap[left_child(node)].getDistance_from_point() < Heap[right_child(node)].getDistance_from_point()) {
-                    swap(node, left_child(node));
-                    implementation(left_child(node));
-                }
-                //αντάλλαξε το με το δεξί παιδί και προσάρμοσε στη σωρό το δεξί παιδί
-                else {
-                    swap(node, right_child(node));
-                    implementation(right_child(node));
-                }
-            }
-        }
-    }*/
-
 
 
     /**
@@ -158,22 +138,5 @@ public class MinHeap {
         return ; //τοτε δεν μπορουμε να βαλουμε καποιο στοιχειο
     }
 
-        /*
-    public void insert_to_minHeap(NodeOfTree new_node) {
-        //αν το πλήθος των στοιχείων που βρίσκονται στη σωρό είναι μεγαλύτερο ή ίσο από τη μέγιστη χωρητικότητα της σωρού τότε
-        // δε μπορούμε να βάλουμε άλλο στοιχείο
-        if (count >= maximum_capacity) {
-            return;
-        }
-        //αν δεν ισχύει αυτό τότε αύξηση το πλήθος των στοιχείων της σωρού κατά 1
-        //και αναπροσάρμοσε τη σειρά των στοιχείων μέσα σε αυτή
-        Heap[++count] = new_node;
-        int temp = count;
-        while (Heap[temp].getDistance_from_point() < Heap[parent(temp)].getDistance_from_point()) {
-            swap(temp, parent(temp));
-            temp = parent(temp);
-        }
-    }
-*/
 
 }
