@@ -8,7 +8,7 @@ public class Deletion {
         NodeOfTree parent = null; //Κενός κόμβος
         ArrayList<NodeOfTree> temp_nodes = new ArrayList<>(); //Φτιάχνω μια λίστα με όλους τους κόμβους
         temp_nodes.add(tree.getRoot()) ;
-
+        tree.setTotal_records(tree.getTotal_records()-1);
         boolean flag =true ;
 
         while(flag){
@@ -79,6 +79,8 @@ public class Deletion {
             temp_nodes.addAll(parent.getChildren());
 
         }
+        tree.previous_records = tree.getTotal_records();
+        tree.setTotal_records(tree.previous_records - 1 );
     }
 
 

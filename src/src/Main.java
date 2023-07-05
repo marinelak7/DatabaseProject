@@ -9,7 +9,6 @@ public class  Main {
         ArrayList<Location> locations = null; //Μια λίστα που θα αποθηκεύει τις τοποθεσίες
 
 
-
         //Βήμα 1. Διαβάζουμε το map.osm αρχείο και φτιάχνουμε το datafile και το indexfile
         //datafile -> αποτελείται από blocks μεγέθους 32KB και περιλαμβάνει τις εγγραφές
         //indexfile -> οργανώνει τις εγγραφές που είναι αποθηκευμένες στο datafile
@@ -43,15 +42,9 @@ public class  Main {
         //Εδώ ξεκινούν οι απαιτούμενες λειτουργικότητες
 
         //αρχικοποίηση τιμών
-        /*double lat = 35.416235; //x
+        double lat = 35.416235; //x
         double lon = 28.113573; //y
-        long id =828871311; //id τοποθεσίας*/
-
-        double lat = 35.875626; //x
-        double lon = 28.563454; //y
-        long id =828871313; //id τοποθεσίας
-
-
+        long id =828871311; //id τοποθεσίας
 
 
 
@@ -71,8 +64,10 @@ public class  Main {
         tree.add_in_tree(new Point(lat,lon));
         Data data2 = new Data();
         locations = data2.Read_Data();
-        if(size !=locations.size())
+
+        if((size !=locations.size()) && (tree.previous_records < tree.getTotal_records())) {
             System.out.println("H τοποθεσία προστέθηκε επιτυχώς.");
+        }
         else
             System.out.println("Η τοποθεσία δεν προστέθηκε.");
         ending_time = System.currentTimeMillis() - starting_time;
@@ -84,10 +79,6 @@ public class  Main {
 
         //----------------------------------------------------------------
 
-        //lat = 40.0584068; //x
-        //lon = 22.5659899; //y
-        //id =970005045; //id τοποθεσίας
-
         //2. Διαγραφή -> Δυναμική ενημέρωση για διαγραφή από το δένδρο
 
         Location new_location2 = new Location(id, lat, lon);
@@ -96,6 +87,7 @@ public class  Main {
         size = locations.size();
         Deletion delete = new Deletion();
         delete.deletion(id,locations,tree);
+
 
         if(size !=locations.size())
             System.out.println("Η τοποθεσία διαγράφτηκε επιτυχώς.");
@@ -116,14 +108,13 @@ public class  Main {
         int count = 0;
         System.out.println("\nΕρώτημα περιοχής χωρίς την χρήση καταλόγου για range=" + range + " lat= " + lat + " lon= " + lon );
         starting_time = System.currentTimeMillis();
-      RangeQuery range_query = new RangeQuery();
+        RangeQuery range_query = new RangeQuery();
         range_query = new RangeQuery();
         ArrayList<Location> locations_in_range = range_query.range_query_without_index(new Location(-1, lat, lon), range, locations);
-        //for (Location neighbor : locations_in_range) {
-          //System.out.println(neighbor.toString());
-          //count++;
-        //}
-      //System.out.println(count);
+        /*for (Location neighbor : locations_in_range) {
+          System.out.println(neighbor.toString());
+        }*/
+
         ending_time = System.currentTimeMillis() - starting_time;
         System.out.println("Χρόνος που χρειάστηκε: " + ending_time + "ms");
         System.out.println("!-----------------------------------------------");

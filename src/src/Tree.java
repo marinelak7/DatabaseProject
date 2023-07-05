@@ -25,6 +25,11 @@ public class Tree {
     //αριθμός εισαγωγών
     private int total_records;
 
+    public int previous_records;
+
+
+
+
 
     /**
      * Κατασκευαστής του δέντρου
@@ -35,9 +40,9 @@ public class Tree {
     }
 
 
-    /*public int getTotal_records() {
+    public int getTotal_records() {
         return total_records;
-    }*/
+    }
 
     /**
      * Setter για το πλήθος των εισαγωγών
@@ -155,12 +160,12 @@ public class Tree {
         NodeOfTree Node1 = new NodeOfTree(0, 0, 0, 0);
         NodeOfTree Node2 = new NodeOfTree(0, 0, 0, 0);
         //περίμετρος που θα βρεθεί όταν ταξινομήσουμε τα σημεία σύμφωνα με τα x τους
-        double perimeter_X = 0;
+        double perimeter_of_X = 0;
         //περίμετρος που θα βρεθεί όταν ταξινομήσουμε τα σημεία σύμφωνα με τα y τους
-        double perimeter_Y = 0;
+        double perimeter_of_Y = 0;
         //υπολογισμός του overlap
         //σκοπός είναι να πάρει την μικρότερη δυνατή τιμή
-        double min_overlap = Double.MAX_VALUE;
+        double minimum_overlap = Double.MAX_VALUE;
 
         //αν ο κόμβος node είναι φύλλο
         if (node.getChildren().size() == 0) {
@@ -170,21 +175,21 @@ public class Tree {
                 //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ καινούργιων κόμβων
                 NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
                 NodeOfTree node2 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
-                int _k = 0;
+                int b = 0;
                 //χωρίζουμε τα σημεία που ήταν στον αρχικό κόμβο
                 //τοποθετούμε τα μισά στον πρώτο ΠΡΟΣΩΡΙΝΟ κόμβο
 
-                for (; _k < min - 1 + k; _k++) {
-                    node1.add_new_point(node.getPoints().get(_k));
+                for (; b < min - 1 + k; b++) {
+                    node1.add_new_point(node.getPoints().get(b));
                 }
                 //και τα άλλα μισά στον δεύτερο ΠΡΟΣΩΡΙΝΟ κόμβο
-                for (; _k < max + 1; _k++) {
-                    node2.add_new_point(node.getPoints().get(_k));
+                for (; b < max + 1; b++) {
+                    node2.add_new_point(node.getPoints().get(b));
                 }
 
                 // υπολογίζουμε το άθροισμα των περιμέτρων των δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων όταν ταξινομομούμε σύμφωνα με στο x
-                double perx = node1.getRectangle().getPerimeter() + node2.getRectangle().getPerimeter();
-                perimeter_X += perx;
+                double sum_per_X = node1.getRectangle().getPerimeter() + node2.getRectangle().getPerimeter();
+                perimeter_of_X += sum_per_X;
             }
             //κάνουμε την ίδια διαδικασία απλά τώρα ταξινομούμε τα προς y
             //ταξινόμηση των σημείων του κόμβου ως προς τον άξονα y (απο το μικρότερο στο μεγαλύτερο)
@@ -193,50 +198,50 @@ public class Tree {
                 //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων
                 NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
                 NodeOfTree node2 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
-                int _k = 0;
+                int b = 0;
                 //χωρίζουμε τα σημεία που ήταν στον αρχικό κόμβο
                 //τοποθετούμε τα μισά στον πρώτο ΠΡΟΣΩΡΙΝΟ κόμβο
-                for (; _k < min - 1 + k; _k++) {
-                    node1.add_new_point(node.getPoints().get(_k));
+                for (; b < min - 1 + k; b++) {
+                    node1.add_new_point(node.getPoints().get(b));
                 }
                 //και τα άλλα μισά στον δεύτερο ΠΡΟΣΩΡΙΝΟ κόμβο
-                for (; _k < max + 1; _k++) {
-                    node2.add_new_point(node.getPoints().get(_k));
+                for (; b < max + 1; b++) {
+                    node2.add_new_point(node.getPoints().get(b));
                 }
                 //άθροισμα των περιμέτρων των δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων όταν ταξινομούμε σύμφωνα με το y
-                double pery = node1.getRectangle().getPerimeter() + node2.getRectangle().getPerimeter();
-                perimeter_Y += pery;
+                double sum_per_Y = node1.getRectangle().getPerimeter() + node2.getRectangle().getPerimeter();
+                perimeter_of_Y += sum_per_Y;
             }
             //διαλέγουμε τη μικρότερη τιμή περιμέτρων που έχει προκύψει
             //αν η πρώτη περίμετρος (ως προς x) είναι μικρότερη τότε
-            if (perimeter_X < perimeter_Y) {
+            if (perimeter_of_X < perimeter_of_Y) {
                 // γίνεται πάλι ταξινόμηση των σημείων του κόμβου ως προς τον άξονα x (μικρότερο προς μεγαλύτερο)
                 node.getPoints().sort(new Point.PointsComparatorX());
                 //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων
                 for (int k = 1; k < max - 2 * min + 2; k++) {
                     NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
                     NodeOfTree node2 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
-                    int _k = 0;
+                    int b = 0;
                     //χωρίζουμε πάλι τα σημεία στους δύο νέους ΠΡΟΣΩΡΙΝΟΥΣ κόμβους
-                    for (; _k < min - 1 + k; _k++) {
-                        node1.add_new_point(node.getPoints().get(_k));
+                    for (; b < min - 1 + k; b++) {
+                        node1.add_new_point(node.getPoints().get(b));
                     }
-                    for (; _k < max + 1; _k++) {
-                        node2.add_new_point(node.getPoints().get(_k));
+                    for (; b < max + 1; b++) {
+                        node2.add_new_point(node.getPoints().get(b));
                     }
                     //όμως τώρα υπολογίζουμε το overlap που σχηματίζεται μεταξύ των ΠΡΟΣΩΡΙΝΩΝ κόμβων (όχι την περίμετρο)
                     //όταν ταξινομούμε ως προς x
                     double overlapx = node1.getRectangle().calculate_overlap(node2.getRectangle());
                     //κρατάμε το μικρότερο πιθανό overlap και δίνουμε τιμές στα στους δύο ΚΥΡΙΟΥΣ κόμβους
-                    if (overlapx < min_overlap) {
-                        min_overlap = overlapx;
+                    if (overlapx < minimum_overlap) {
+                        minimum_overlap = overlapx;
                         Node1 = node1;
                         Node2 = node2;
                     }
-                    //αν το overlap που βρήκαμε τώρα είναι ίσο με το min_overlap τότε συγκρίνουμε
+                    //αν το overlap που βρήκαμε τώρα είναι ίσο με το minimum_overlap τότε συγκρίνουμε
                     //α) το εμβαδό του ορθογωνίου που προκύπτει από την πρόσθεση των ορθογωνίων που σχηματίζουν οι δύο ΚΥΡΙΟΙ κόμβοι
                     //β) το εμβαδό του ορθογωνίου που προκύπτει από την πρόσθεση των ορθογωνίων που σχηματίζουν οι δύο ΠΡΟΣΩΡΙΝΟΙ κόμβοι
-                    if(overlapx==min_overlap){
+                    if(overlapx==minimum_overlap){
                         double area1= Node1.getRectangle().getArea() + Node2.getRectangle().getArea();
                         double area2= node1.getRectangle().getArea() + node2.getRectangle().getArea();
                         //αν το β) είναι μικρότερο τότε δίνουμε καινούργιες τιμές στους ΚΥΡΙΟΥΣ κόμβους
@@ -255,26 +260,26 @@ public class Tree {
                     //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων
                     NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
                     NodeOfTree node2 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
-                    int _k = 0;
-                    for (; _k < min - 1 + k; _k++) {
-                        node1.add_new_point(node.getPoints().get(_k));
+                    int b = 0;
+                    for (; b < min - 1 + k; b++) {
+                        node1.add_new_point(node.getPoints().get(b));
                     }
-                    for (; _k < max + 1; _k++) {
-                        node2.add_new_point(node.getPoints().get(_k));
+                    for (; b < max + 1; b++) {
+                        node2.add_new_point(node.getPoints().get(b));
                     }
                     //όμως τώρα υπολογίζουμε το overlap που σχηματίζεται μεταξύ των ΠΡΟΣΩΡΙΝΩΝ κόμβων (όχι την περίμετρο)
                     //όταν ταξινομούμε ως προς y
                     double overlapy = node1.getRectangle().calculate_overlap(node2.getRectangle());
                     //κρατάμε το μικρότερο πιθανό overlap και δίνουμε τιμές στα στους δύο ΚΥΡΙΟΥΣ κόμβους
-                    if (overlapy < min_overlap) {
-                        min_overlap = overlapy;
+                    if (overlapy < minimum_overlap) {
+                        minimum_overlap = overlapy;
                         Node1 = node1;
                         Node2 = node2;
                     }
-                    //αν το overlap που βρήκαμε τώρα είναι ίσο με το min_overlap τότε συγκρίνουμε
+                    //αν το overlap που βρήκαμε τώρα είναι ίσο με το minimum overlap τότε συγκρίνουμε
                     //α) το εμβαδό του ορθογωνίου που προκύπτει από την πρόσθεση των ορθογωνίων που σχηματίζουν οι δύο ΚΥΡΙΟΙ κόμβοι
                     //β) το εμβαδό του ορθογωνίου που προκύπτει από την πρόσθεση των ορθογωνίων που σχηματίζουν οι δύο ΠΡΟΣΩΡΙΝΟΙ κόμβοι
-                    if(overlapy==min_overlap){
+                    if(overlapy==minimum_overlap){
                         double area1= Node1.getRectangle().getArea() + Node2.getRectangle().getArea();
                         double area2= node1.getRectangle().getArea() + node2.getRectangle().getArea();
                         //αν το β) είναι μικρότερο τότε δίνουμε καινούργιες τιμές στους ΚΥΡΙΟΥΣ κόμβους
@@ -295,16 +300,16 @@ public class Tree {
                 //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων
                 NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
                 NodeOfTree node2 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
-                int _k = 0;
-                for (; _k < min - 1 + k; _k++) {
-                    node1.add_new_child_node(node.getChildren().get(_k));
+                int b = 0;
+                for (; b < min - 1 + k; b++) {
+                    node1.add_new_child_node(node.getChildren().get(b));
                 }
-                for (; _k < max + 1; _k++) {
-                    node2.add_new_child_node(node.getChildren().get(_k));
+                for (; b < max + 1; b++) {
+                    node2.add_new_child_node(node.getChildren().get(b));
                 }
                 //άθροισμα των περιμέτρων των δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων όταν ταξινομομούμε σύμφωνα με στο x
-                double perX = node1.getRectangle().getPerimeter() + node2.getRectangle().getPerimeter();
-                perimeter_X += perX;
+                double sum_per_X = node1.getRectangle().getPerimeter() + node2.getRectangle().getPerimeter();
+                perimeter_of_X += sum_per_X;
             }
             //κάνε ταξινόμηση των κόμβων σύμφωνα με τις τιμές των ορθογωνίων τους ως προς τον άξονα y
             // (από την πιο μικρή τιμή προς την πιο μεγάλη)
@@ -313,43 +318,43 @@ public class Tree {
                 //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων
                 NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
                 NodeOfTree node2 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
-                int _k = 0;
-                for (; _k < min - 1 + k; _k++) {
-                    node1.add_new_child_node(node.getChildren().get(_k));
+                int b = 0;
+                for (; b < min - 1 + k; b++) {
+                    node1.add_new_child_node(node.getChildren().get(b));
                 }
-                for (; _k < max + 1; _k++) {
-                    node2.add_new_child_node(node.getChildren().get(_k));
+                for (; b < max + 1; b++) {
+                    node2.add_new_child_node(node.getChildren().get(b));
                 }
                 //άθροισμα των περιμέτρων των δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων όταν ταξινομομούμε σύμφωνα με στο y
-                double perY = node1.getRectangle().getPerimeter() + node2.getRectangle().getPerimeter();
-                perimeter_Y += perY;
+                double sum_per_Y = node1.getRectangle().getPerimeter() + node2.getRectangle().getPerimeter();
+                perimeter_of_Y += sum_per_Y;
             }
             //πάλι διαλέγουμε τη μικρότερη τιμή περιμέτρων
             //αν η πρώτη περίμετρος είναι μικρότερο τότε
-            if (perimeter_X < perimeter_Y) {
+            if (perimeter_of_X < perimeter_of_Y) {
                 //γίνεται πάλι ταξινόμηση των κόμβων σύμφωνα με τις τιμές των ορθογωνίων τους ως προς τον άξονα x
                 node.getChildren().sort(new NodeOfTree.ComparatorX());
                 for (int k = 1; k < max - 2 * min + 2; k++) {
                     //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων
                     NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
                     NodeOfTree node2 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
-                    int _k = 0;
-                    for (; _k < min - 1 + k; _k++) {
-                        node1.add_new_child_node(node.getChildren().get(_k));
+                    int b = 0;
+                    for (; b < min - 1 + k; b++) {
+                        node1.add_new_child_node(node.getChildren().get(b));
                     }
-                    for (; _k < max + 1; _k++) {
-                        node2.add_new_child_node(node.getChildren().get(_k));
+                    for (; b < max + 1; b++) {
+                        node2.add_new_child_node(node.getChildren().get(b));
                     }
                     //υπολογίζουμε το overlap που σχηματίζεται μεταξύ των ΠΡΟΣΩΡΙΝΩΝ κόμβων (όχι την περίμετρο)
                     // όταν ταξινομούμε ως προς x
                     double overlapX = node1.getRectangle().calculate_overlap(node2.getRectangle());
                     //κρατάμε το μικρότερο πιθανό overlap και δίνουμε τιμές στα στους δύο ΚΥΡΙΟΥΣ κόμβους
-                    if (overlapX < min_overlap) {
-                        min_overlap = overlapX;
+                    if (overlapX < minimum_overlap) {
+                        minimum_overlap = overlapX;
                         Node1 = node1;
                         Node2 = node2;
                     }
-                    if(overlapX==min_overlap){
+                    if(overlapX==minimum_overlap){
                         double area1= Node1.getRectangle().getArea() + Node2.getRectangle().getArea();
                         double area2= node1.getRectangle().getArea() + node2.getRectangle().getArea();
                         if(area2<area1){
@@ -367,23 +372,23 @@ public class Tree {
                     //αρχικοποίηση δύο ΠΡΟΣΩΡΙΝΩΝ κόμβων
                     NodeOfTree node1 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
                     NodeOfTree node2 = new NodeOfTree(Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MIN_VALUE);
-                    int _k = 0;
-                    for (; _k < min - 1 + k; _k++) {
-                        node1.add_new_child_node(node.getChildren().get(_k));
+                    int b = 0;
+                    for (; b < min - 1 + k; b++) {
+                        node1.add_new_child_node(node.getChildren().get(b));
                     }
-                    for (; _k < max + 1; _k++) {
-                        node2.add_new_child_node(node.getChildren().get(_k));
+                    for (; b < max + 1; b++) {
+                        node2.add_new_child_node(node.getChildren().get(b));
                     }
                     //υπολογισμός του overlap που σχηματίζεται μεταξύ των ΠΡΟΣΩΡΙΝΩΝ κόμβων (όχι την περίμετρο)
                     //όταν ταξινομούμε ως προς y
                     double overlapY = node1.getRectangle().calculate_overlap(node2.getRectangle());
                     //κρατάμε το μικρότερο πιθανό overlap και δίνουμε τιμές στα στους δύο ΚΥΡΙΟΥΣ κόμβους
-                    if (overlapY < min_overlap) {
-                        min_overlap = overlapY;
+                    if (overlapY < minimum_overlap) {
+                        minimum_overlap = overlapY;
                         Node1 = node1;
                         Node2 = node2;
                     }
-                    if(overlapY==min_overlap){
+                    if(overlapY==minimum_overlap){
                         double area1= Node1.getRectangle().getArea() + Node2.getRectangle().getArea();
                         double area2= node1.getRectangle().getArea() + node2.getRectangle().getArea();
                         if(area2<area1){
@@ -395,10 +400,10 @@ public class Tree {
             }
         }
 
-        ArrayList<NodeOfTree> splitted_node = new ArrayList<>(2);
-        splitted_node.add(Node1);
-        splitted_node.add(Node2);
-        return splitted_node;
+        ArrayList<NodeOfTree> split = new ArrayList<>(2);
+        split.add(Node1);
+        split.add(Node2);
+        return split;
     }
 
 
@@ -407,7 +412,8 @@ public class Tree {
      * @param new_point σημείο που πρέπει να προσθέσουμε στο δέντρο
      */
     public void add_in_tree(Point new_point) {
-        total_records ++;
+
+
         node_path = new ArrayList<>();
         NodeOfTree node = ChooseSubtree(root, new_point);
         //αν το πλήθος των σημειων του κόμβου είναι μικρότερο από τον μέγιστο αριθμό παιδιών που μπορεί να έχει ένας κόμβος
@@ -491,6 +497,8 @@ public class Tree {
                 }
             }
         }
+        previous_records = total_records ;
+        total_records++;
     }
 
     /**
